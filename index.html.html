@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client Check-In & Macro Adjuster</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --accent: #10b981;
+      --training: #38bdf8;
+      --rest: #a855f7;
+    }
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 20px 14px; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 560px; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+    h1 { font-size: 1.25rem; font-weight: 700; margin: 0 0 4px; text-align: center; }
+    p.subtitle { font-size: 0.85rem; color: var(--text-muted); text-align: center; margin: 0 0 16px; }
+    label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 12px 0 6px; }
+    input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; }
+    input:focus, select:focus { outline: none; border-color: var(--primary); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-primary { background: var(--primary); color: #fff; font-weight: 700; border: none; border-radius: 8px; padding: 14px; width: 100%; cursor: pointer; font-size: 1rem; margin-top: 18px; }
+    .btn-secondary { background: #334155; color: #fff; font-weight: 600; border: none; border-radius: 8px; padding: 10px; width: 100%; cursor: pointer; font-size: 0.85rem; margin-top: 8px; }
+    .file-input-wrapper { background: #0f172a; border: 1px dashed var(--card-border); border-radius: 8px; padding: 12px; text-align: center; font-size: 0.85rem; cursor: pointer; }
+    .results-card { display: none; border-left: 4px solid var(--accent); }
+    
+    .day-type-card { background: #0f172a; border-radius: 10px; padding: 14px; margin-top: 12px; border-left: 4px solid var(--primary); }
+    .day-type-card.training-card { border-left-color: var(--training); }
+    .day-type-card.rest-card { border-left-color: var(--rest); }
+    .day-title { font-weight: 700; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    
+    .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
+    .macro-box { background: #1e293b; border: 1px solid var(--card-border); border-radius: 6px; padding: 8px 4px; }
+    .macro-val { font-size: 1.05rem; font-weight: 800; color: #fff; }
+    .macro-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+    .rationale { font-size: 0.85rem; line-height: 1.45; color: #e2e8f0; background: #0f172a; padding: 12px; border-radius: 8px; margin-top: 10px; }
+    .toggle-container { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding: 10px; background: #0f172a; border-radius: 8px; border: 1px solid var(--card-border); }
+    .toggle-container label { margin: 0; font-size: 0.85rem; cursor: pointer; }
+    .toggle-container input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <h1>Weekly Macro Check-In</h1>
+    <p class="subtitle">Enter your check-in numbers to calculate your adjusted targets</p>
+
+    <div class="file-input-wrapper" onclick="document.getElementById('fileUpload').click()">
+      <span id="fileLabel">📁 Tap to upload previous plan (.json)</span>
+      <input type="file" id="fileUpload" accept=".json" style="display:none" onchange="handleFile(event)">
+    </div>
+
+    <label>Current Training / Nutrition Phase</label>
+    <select id="phase">
+      <option value="fat_loss">Fat Loss / Deficit</option>
+      <option value="maintenance">Maintenance / Primer</option>
+      <option value="hypertrophy">Muscle Gain / Surplus</option>
+    </select>
+
+    <div class="grid-2">
+      <div>
+        <label>Current Avg Wt (lbs)</label>
+        <input type="number" step="0.1" id="currWeight" placeholder="e.g. 182.4">
+      </div>
+      <div>
+        <label>Prev Avg Wt (lbs)</label>
+        <input type="number" step="0.1" id="prevWeight" placeholder="e.g. 183.8">
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <label>Current Daily Cal</label>
+        <input type="number" id="currCals" placeholder="e.g. 2200">
+      </div>
+      <div>
+        <label>Adherence (Days / 7)</label>
+        <input type="number" id="adherence" min="0" max="7" value="7">
+      </div>
+    </div>
+
+    <div class="toggle-container">
+      <label for="carbCyclingToggle">Enable Training vs Rest Day Cycling</label>
+      <input type="checkbox" id="carbCyclingToggle" onchange="toggleCyclingInputs()">
+    </div>
+
+    <div id="cyclingInputs" style="display:none; margin-top: 10px;">
+      <label>Training Days Per Week</label>
+      <select id="trainingDaysCount">
+        <option value="3">3 Days Training / 4 Days Rest</option>
+        <option value="4" selected>4 Days Training / 3 Days Rest</option>
+        <option value="5">5 Days Training / 2 Days Rest</option>
+        <option value="6">6 Days Training / 1 Day Rest</option>
+      </select>
+    </div>
+
+    <button class="btn-primary" onclick="runProgression()">Calculate Progression</button>
+  </div>
+
+  <div id="resultsCard" class="card results-card">
+    <h2 style="font-size: 1.1rem; margin:0 0 4px;">New Target Protocol</h2>
+    <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 12px;" id="weeklySummaryText"></div>
+
+    <div id="flatTargets">
+      <div class="day-type-card">
+        <div class="day-title">Daily Baseline Targets (Every Day)</div>
+        <div class="macro-grid">
+          <div class="macro-box"><div class="macro-val" id="resCals">--</div><div class="macro-lbl">Calories</div></div>
+          <div class="macro-box"><div class="macro-val" id="resPro">--g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro-box"><div class="macro-val" id="resCarb">--g</div><div class="macro-lbl">Carbs</div></div>
+          <div class="macro-box"><div class="macro-val" id="resFat">--g</div><div class="macro-lbl">Fats</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cycledTargets" style="display:none;">
+      <div class="day-type-card training-card">
+        <div class="day-title" style="color: var(--training);">🏋️ Training Days (High Carb) <span style="font-size:0.75rem; font-weight:400;" id="trainDaysBadge"></span></div>
+        <div class="macro-grid">
+          <div class="macro-box"><div class="macro-val" id="trainCals">--</div><div class="macro-lbl">Calories</div></div>
+          <div class="macro-box"><div class="macro-val" id="trainPro">--g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro-box"><div class="macro-val" id="trainCarb">--g</div><div class="macro-lbl">Carbs</div></div>
+          <div class="macro-box"><div class="macro-val" id="trainFat">--g</div><div class="macro-lbl">Fats</div></div>
+        </div>
+      </div>
+
+      <div class="day-type-card rest-card">
+        <div class="day-title" style="color: var(--rest);">🧘 Rest Days (Low Carb) <span style="font-size:0.75rem; font-weight:400;" id="restDaysBadge"></span></div>
+        <div class="macro-grid">
+          <div class="macro-box"><div class="macro-val" id="restCals">--</div><div class="macro-lbl">Calories</div></div>
+          <div class="macro-box"><div class="macro-val" id="restPro">--g</div><div class="macro-lbl">Protein</div></div>
+          <div class="macro-box"><div class="macro-val" id="restCarb">--g</div><div class="macro-lbl">Carbs</div></div>
+          <div class="macro-box"><div class="macro-val" id="restFat">--g</div><div class="macro-lbl">Fats</div></div>
+        </div>
+      </div>
+    </div>
+
+    <label style="margin-top:14px;">Coaching Rationale</label>
+    <div class="rationale" id="resRationale"></div>
+
+    <button class="btn-primary" style="background: var(--accent);" onclick="copyToClipboard()">Copy Targets to Clipboard</button>
+    <button class="btn-secondary" onclick="exportJSON()">Download Updated Plan (.json)</button>
+  </div>
+</div>
+
+<script>
+  let state = {
+    phase: "fat_loss",
+    currentWeight: null,
+    carbCycling: false,
+    trainingDays: 4,
+    dailyBaseline: { calories: 2000, protein: 180, carbs: 180, fats: 60 },
+    trainingDayTargets: null,
+    restDayTargets: null
+  };
+
+  window.onload = function() {
+    const saved = localStorage.getItem('trainer_macro_state');
+    if (saved) {
+      try {
+        state = JSON.parse(saved);
+        document.getElementById('phase').value = state.phase || 'fat_loss';
+        document.getElementById('prevWeight').value = state.currentWeight || '';
+        document.getElementById('currCals').value = state.dailyBaseline?.calories || '';
+        if (state.carbCycling) {
+          document.getElementById('carbCyclingToggle').checked = true;
+          document.getElementById('trainingDaysCount').value = state.trainingDays || 4;
+          toggleCyclingInputs();
+        }
+      } catch (e) {}
+    }
+  };
+
+  function toggleCyclingInputs() {
+    const isChecked = document.getElementById('carbCyclingToggle').checked;
+    document.getElementById('cyclingInputs').style.display = isChecked ? 'block' : 'none';
+  }
+
+  function handleFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      state = JSON.parse(e.target.result);
+      document.getElementById('phase').value = state.phase || 'fat_loss';
+      document.getElementById('prevWeight').value = state.currentWeight || '';
+      document.getElementById('currCals').value = state.dailyBaseline?.calories || '';
+      if (state.carbCycling) {
+        document.getElementById('carbCyclingToggle').checked = true;
+        document.getElementById('trainingDaysCount').value = state.trainingDays || 4;
+        toggleCyclingInputs();
+      }
+      document.getElementById('fileLabel').innerText = `✓ Loaded: ${file.name}`;
+    };
+    reader.readAsText(file);
+  }
+
+  function runProgression() {
+    const phase = document.getElementById('phase').value;
+    const currW = parseFloat(document.getElementById('currWeight').value);
+    const prevW = parseFloat(document.getElementById('prevWeight').value);
+    const currC = parseInt(document.getElementById('currCals').value, 10);
+    const adhr = parseInt(document.getElementById('adherence').value, 10);
+    const isCycling = document.getElementById('carbCyclingToggle').checked;
+    const trainDays = parseInt(document.getElementById('trainingDaysCount').value, 10);
+    const restDays = 7 - trainDays;
+
+    if (!currW || !prevW || !currC) {
+      alert("Please enter current weight, previous weight, and current calories.");
+      return;
+    }
+
+    let newAvgCals = currC;
+    let rationale = "";
+    const pctChange = ((currW - prevW) / prevW) * 100;
+
+    if (adhr < 5) {
+      rationale = `Weekly adherence was ${adhr}/7 days. Macro targets held steady to establish compliance before adjusting metabolic intake.`;
+    } else {
+      if (phase === "fat_loss") {
+        if (pctChange > -0.3) {
+          newAvgCals = Math.round(currC * 0.92);
+          rationale = `Weight loss stalled (${pctChange.toFixed(2)}% change). Scaled average calories down 8% (~${currC - newAvgCals} kcal) to resume fat loss.`;
+        } else if (pctChange < -1.5) {
+          newAvgCals = Math.round(currC * 1.05);
+          rationale = `Rate of loss is faster than desired (${Math.abs(pctChange).toFixed(2)}% drop). Increased average calories by 5% to protect lean tissue.`;
+        } else {
+          rationale = `Weight loss is on target (${Math.abs(pctChange).toFixed(2)}% drop). Average calorie targets held steady.`;
+        }
+      } else if (phase === "hypertrophy") {
+        if (pctChange < 0.1) {
+          newAvgCals = currC + 125;
+          rationale = `Surplus stalled (${pctChange.toFixed(2)}% change). Added 125 kcal daily.`;
+        } else if (pctChange > 0.6) {
+          newAvgCals = currC - 75;
+          rationale = `Surplus progressing faster than optimal rate (${pctChange.toFixed(2)}% gain). Trimmed 75 kcal to limit excess fat storage.`;
+        } else {
+          rationale = `Muscle-gain surplus rate is right on track (${pctChange.toFixed(2)}% gain). Targets held steady.`;
+        }
+      } else {
+        newAvgCals = currC + (pctChange < -0.5 ? 100 : (pctChange > 0.5 ? -100 : 0));
+        rationale = `Maintenance phase targets held to stabilize body mass.`;
+      }
+    }
+
+    // Baseline Macros
+    const pro = Math.round(currW * 1.0);
+    const baseFat = Math.max(45, Math.round((newAvgCals * 0.25) / 9));
+    const baseCarb = Math.max(50, Math.round((newAvgCals - (pro * 4) - (baseFat * 9)) / 4));
+    const resolvedBaseCals = (pro * 4) + (baseCarb * 4) + (baseFat * 9);
+    const weeklyBudget = resolvedBaseCals * 7;
+
+    let trainTargets = null;
+    let restTargets = null;
+
+    if (isCycling) {
+      // Training Day: +10% over average daily baseline
+      const rawTrainCals = Math.round(resolvedBaseCals * 1.10);
+      // Rest Day: absorbs remaining weekly budget exactly
+      const rawRestCals = Math.round((weeklyBudget - (trainDays * rawTrainCals)) / restDays);
+
+      // Training Macros (Higher Carb, 20% Fat)
+      const trainFat = Math.max(40, Math.round((rawTrainCals * 0.20) / 9));
+      const trainCarb = Math.max(60, Math.round((rawTrainCals - (pro * 4) - (trainFat * 9)) / 4));
+      const trainCals = (pro * 4) + (trainCarb * 4) + (trainFat * 9);
+
+      // Rest Macros (Lower Carb, 30% Fat)
+      const restFat = Math.max(45, Math.round((rawRestCals * 0.30) / 9));
+      const restCarb = Math.max(30, Math.round((rawRestCals - (pro * 4) - (restFat * 9)) / 4));
+      const restCals = (pro * 4) + (restCarb * 4) + (restFat * 9);
+
+      trainTargets = { calories: trainCals, protein: pro, carbs: trainCarb, fats: trainFat };
+      restTargets = { calories: restCals, protein: pro, carbs: restCarb, fats: restFat };
+
+      document.getElementById('trainDaysBadge').innerText = `(${trainDays}x / week)`;
+      document.getElementById('restDaysBadge').innerText = `(${restDays}x / week)`;
+
+      document.getElementById('trainCals').innerText = trainCals;
+      document.getElementById('trainPro').innerText = `${pro}g`;
+      document.getElementById('trainCarb').innerText = `${trainCarb}g`;
+      document.getElementById('trainFat').innerText = `${trainFat}g`;
+
+      document.getElementById('restCals').innerText = restCals;
+      document.getElementById('restPro').innerText = `${pro}g`;
+      document.getElementById('restCarb').innerText = `${restCarb}g`;
+      document.getElementById('restFat').innerText = `${restFat}g`;
+
+      document.getElementById('flatTargets').style.display = 'none';
+      document.getElementById('cycledTargets').style.display = 'block';
+      document.getElementById('weeklySummaryText').innerText = `Weekly Budget: ${(trainCals * trainDays + restCals * restDays).toLocaleString()} kcal across 7 days`;
+    } else {
+      document.getElementById('resCals').innerText = resolvedBaseCals;
+      document.getElementById('resPro').innerText = `${pro}g`;
+      document.getElementById('resCarb').innerText = `${baseCarb}g`;
+      document.getElementById('resFat').innerText = `${baseFat}g`;
+
+      document.getElementById('flatTargets').style.display = 'block';
+      document.getElementById('cycledTargets').style.display = 'none';
+      document.getElementById('weeklySummaryText').innerText = `Weekly Budget: ${(resolvedBaseCals * 7).toLocaleString()} kcal (Flat daily distribution)`;
+    }
+
+    state = {
+      phase,
+      currentWeight: currW,
+      carbCycling: isCycling,
+      trainingDays: trainDays,
+      dailyBaseline: { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat },
+      trainingDayTargets: trainTargets,
+      restDayTargets: restTargets,
+      lastUpdated: new Date().toISOString().split('T')[0]
+    };
+
+    localStorage.setItem('trainer_macro_state', JSON.stringify(state));
+
+    document.getElementById('resRationale').innerText = rationale;
+    document.getElementById('resultsCard').style.display = 'block';
+  }
+
+  function copyToClipboard() {
+    let text = "";
+    if (state.carbCycling) {
+      text = `Weekly Macro Protocol:\n\n🏋️ TRAINING DAYS (${state.trainingDays}x/week):\nCalories: ${state.trainingDayTargets.calories} kcal\nProtein: ${state.trainingDayTargets.protein}g | Carbs: ${state.trainingDayTargets.carbs}g | Fats: ${state.trainingDayTargets.fats}g\n\n🧘 REST DAYS (${7 - state.trainingDays}x/week):\nCalories: ${state.restDayTargets.calories} kcal\nProtein: ${state.restDayTargets.protein}g | Carbs: ${state.restDayTargets.carbs}g | Fats: ${state.restDayTargets.fats}g`;
+    } else {
+      text = `Daily Macro Protocol:\nCalories: ${state.dailyBaseline.calories} kcal\nProtein: ${state.dailyBaseline.protein}g | Carbs: ${state.dailyBaseline.carbs}g | Fats: ${state.dailyBaseline.fats}g`;
+    }
+    navigator.clipboard.writeText(text).then(() => alert("Targets copied to clipboard!"));
+  }
+
+  function exportJSON() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+    const dl = document.createElement('a');
+    dl.setAttribute("href", dataStr);
+    dl.setAttribute("download", `macro_plan_${state.lastUpdated}.json`);
+    document.body.appendChild(dl);
+    dl.click();
+    dl.remove();
+  }
+</script>
+</body>
+</html>
