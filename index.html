@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Client Check-In & Macro Adjuster</title>
+  <title>Client Check-In & Complete Meal Engine</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -13,56 +13,73 @@
       --text-muted: #94a3b8;
       --primary: #3b82f6;
       --accent: #10b981;
-      --training: #38bdf8;
-      --rest: #a855f7;
+      --flex-color: #ec4899;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 20px 14px; display: flex; justify-content: center; }
-    .container { width: 100%; max-width: 560px; }
-    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+    body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 16px 12px; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 640px; }
+    .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
     h1 { font-size: 1.25rem; font-weight: 700; margin: 0 0 4px; text-align: center; }
-    p.subtitle { font-size: 0.85rem; color: var(--text-muted); text-align: center; margin: 0 0 16px; }
-    label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 12px 0 6px; }
-    input, select { width: 100%; padding: 12px; background: #0f172a; border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-main); font-size: 0.95rem; }
-    input:focus, select:focus { outline: none; border-color: var(--primary); }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-primary { background: var(--primary); color: #fff; font-weight: 700; border: none; border-radius: 8px; padding: 14px; width: 100%; cursor: pointer; font-size: 1rem; margin-top: 18px; }
-    .btn-secondary { background: #334155; color: #fff; font-weight: 600; border: none; border-radius: 8px; padding: 10px; width: 100%; cursor: pointer; font-size: 0.85rem; margin-top: 8px; }
-    .file-input-wrapper { background: #0f172a; border: 1px dashed var(--card-border); border-radius: 8px; padding: 12px; text-align: center; font-size: 0.85rem; cursor: pointer; }
-    .results-card { display: none; border-left: 4px solid var(--accent); }
+    p.subtitle { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin: 0 0 16px; }
     
-    .day-type-card { background: #0f172a; border-radius: 10px; padding: 14px; margin-top: 12px; border-left: 4px solid var(--primary); }
-    .day-type-card.training-card { border-left-color: var(--training); }
-    .day-type-card.rest-card { border-left-color: var(--rest); }
-    .day-title { font-weight: 700; font-size: 0.95rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .section-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); margin: 16px 0 8px; border-bottom: 1px solid var(--card-border); padding-bottom: 4px; }
+    label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin: 8px 0 4px; }
+    input, select, textarea { width: 100%; padding: 10px; background: #0f172a; border: 1px solid var(--card-border); border-radius: 8px; color: var(--text-main); font-size: 0.9rem; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); }
     
-    .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; }
-    .macro-box { background: #1e293b; border: 1px solid var(--card-border); border-radius: 6px; padding: 8px 4px; }
-    .macro-val { font-size: 1.05rem; font-weight: 800; color: #fff; }
-    .macro-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
-    .rationale { font-size: 0.85rem; line-height: 1.45; color: #e2e8f0; background: #0f172a; padding: 12px; border-radius: 8px; margin-top: 10px; }
-    .toggle-container { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding: 10px; background: #0f172a; border-radius: 8px; border: 1px solid var(--card-border); }
-    .toggle-container label { margin: 0; font-size: 0.85rem; cursor: pointer; }
-    .toggle-container input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .slider-group { margin-bottom: 10px; }
+    .slider-header { display: flex; justify-content: space-between; font-size: 0.8rem; color: #cbd5e1; font-weight: 600; margin-bottom: 2px; }
+    .slider-header span.val { color: var(--primary); font-weight: 800; }
+    input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #334155; border-radius: 4px; outline: none; padding: 0; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); cursor: pointer; }
+
+    .toggle-container { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding: 8px 10px; background: #0f172a; border-radius: 8px; border: 1px solid var(--card-border); }
+    .toggle-container label { margin: 0; font-size: 0.8rem; cursor: pointer; }
+    .toggle-container input[type="checkbox"] { width: 18px; height: 18px; }
+
+    .btn-primary { background: var(--primary); color: #fff; font-weight: 700; border: none; border-radius: 8px; padding: 14px; width: 100%; cursor: pointer; font-size: 1rem; margin-top: 14px; }
+    .btn-primary:hover { opacity: 0.9; }
+    
+    .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; margin: 8px 0; }
+    .macro-box { background: #0f172a; border: 1px solid var(--card-border); border-radius: 6px; padding: 8px 2px; }
+    .macro-val { font-size: 1.1rem; font-weight: 800; color: #fff; }
+    .macro-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
+
+    .rationale { font-size: 0.85rem; line-height: 1.45; color: #e2e8f0; background: #0f172a; padding: 12px; border-radius: 8px; margin: 10px 0; }
+
+    .tab-bar { display: flex; gap: 6px; margin: 12px 0 6px; }
+    .tab-btn { flex: 1; padding: 10px; font-size: 0.85rem; font-weight: 700; border-radius: 6px; border: 1px solid var(--card-border); background: #0f172a; color: var(--text-muted); cursor: pointer; }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .meal-block { background: #0f172a; border: 1px solid var(--card-border); border-radius: 10px; padding: 14px; margin-top: 14px; }
+    .meal-block-header { font-size: 1rem; font-weight: 700; color: #fff; display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 6px; margin-bottom: 10px; }
+    .meal-target-pill { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+
+    .recipe-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
+    .recipe-title { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .recipe-ingredients { list-style: none; padding-left: 0; margin: 0; font-size: 0.8rem; line-height: 1.5; color: #cbd5e1; }
+    .recipe-ingredients li { margin-bottom: 3px; }
+    .recipe-ingredients strong { color: #f8fafc; }
+
+    .flex-card { background: rgba(236, 72, 153, 0.08); border: 1px solid var(--flex-color); border-radius: 10px; padding: 14px; margin-top: 14px; }
+    .flex-title { font-size: 0.95rem; font-weight: 700; color: var(--flex-color); margin: 0 0 6px; display: flex; justify-content: space-between; align-items: center; }
+    .flex-body { font-size: 0.8rem; line-height: 1.45; color: #f1f5f9; }
   </style>
 </head>
 <body>
 
 <div class="container">
   <div class="card">
-    <h1>Weekly Macro Check-In</h1>
-    <p class="subtitle">Enter your check-in numbers to calculate your adjusted targets</p>
+    <h1>Weekly Check-In & Complete Meal Engine</h1>
+    <p class="subtitle">Complete your weekly audit to generate adjusted macros and complete meal recipes.</p>
 
-    <div class="file-input-wrapper" onclick="document.getElementById('fileUpload').click()">
-      <span id="fileLabel">📁 Tap to upload previous plan (.json)</span>
-      <input type="file" id="fileUpload" accept=".json" style="display:none" onchange="handleFile(event)">
-    </div>
-
-    <label>Current Training / Nutrition Phase</label>
+    <div class="section-title">1. Current Metric Audit</div>
+    <label>Current Phase Goal</label>
     <select id="phase">
-      <option value="fat_loss">Fat Loss / Deficit</option>
-      <option value="maintenance">Maintenance / Primer</option>
-      <option value="hypertrophy">Muscle Gain / Surplus</option>
+      <option value="fat_loss">Fat Loss / Calorie Deficit</option>
+      <option value="maintenance">Maintenance / Primer Phase</option>
+      <option value="hypertrophy">Muscle Gain / Calorie Surplus</option>
     </select>
 
     <div class="grid-2">
@@ -71,29 +88,69 @@
         <input type="number" step="0.1" id="currWeight" placeholder="e.g. 182.4">
       </div>
       <div>
-        <label>Prev Avg Wt (lbs)</label>
+        <label>Previous Avg Wt (lbs)</label>
         <input type="number" step="0.1" id="prevWeight" placeholder="e.g. 183.8">
       </div>
     </div>
 
     <div class="grid-2">
       <div>
-        <label>Current Daily Cal</label>
+        <label>Current Daily Cals</label>
         <input type="number" id="currCals" placeholder="e.g. 2200">
       </div>
       <div>
-        <label>Adherence (Days / 7)</label>
+        <label>Diet Adherence (Days/7)</label>
         <input type="number" id="adherence" min="0" max="7" value="7">
       </div>
     </div>
 
-    <div class="toggle-container">
-      <label for="carbCyclingToggle">Enable Training vs Rest Day Cycling</label>
-      <input type="checkbox" id="carbCyclingToggle" onchange="toggleCyclingInputs()">
+    <div class="section-title">2. Biofeedback & Readiness (1 to 5)</div>
+    
+    <div class="slider-group">
+      <div class="slider-header"><span>🏋️ Gym Strength & Performance</span><span class="val" id="valStrength">4/5</span></div>
+      <input type="range" id="rateStrength" min="1" max="5" value="4" oninput="document.getElementById('valStrength').innerText = this.value + '/5'">
     </div>
 
-    <div id="cyclingInputs" style="display:none; margin-top: 10px;">
-      <label>Training Days Per Week</label>
+    <div class="slider-group">
+      <div class="slider-header"><span>🔋 Recovery & Sleep Quality</span><span class="val" id="valRecovery">4/5</span></div>
+      <input type="range" id="rateRecovery" min="1" max="5" value="4" oninput="document.getElementById('valRecovery').innerText = this.value + '/5'">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header"><span>🥗 Digestion & Gut Health</span><span class="val" id="valDigestion">5/5</span></div>
+      <input type="range" id="rateDigestion" min="1" max="5" value="5" oninput="document.getElementById('valDigestion').innerText = this.value + '/5'">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header"><span>🧠 Overall Diet Satiety / Hunger</span><span class="val" id="valDiet">4/5</span></div>
+      <input type="range" id="rateDiet" min="1" max="5" value="4" oninput="document.getElementById('valDiet').innerText = this.value + '/5'">
+    </div>
+
+    <div class="section-title">3. Structure & Meal Frequency</div>
+    <label>Daily Meal Frequency</label>
+    <select id="mealCount">
+      <option value="2">2 Meals / Day (Intermittent Fasting)</option>
+      <option value="3">3 Meals / Day (Breakfast, Lunch, Dinner)</option>
+      <option value="4" selected>4 Meals / Day (Breakfast, Lunch 1, Lunch 2, Dinner)</option>
+      <option value="5">5 Meals / Day (Breakfast, 3 Midday Meals, Dinner)</option>
+      <option value="6">6 Meals / Day (Bodybuilding Frequency)</option>
+    </select>
+
+    <div class="section-title">4. Dietary Preferences & Exclusions</div>
+    <label>Dietary Restrictions / Disliked Foods</label>
+    <input type="text" id="dietRestrictions" placeholder="e.g. No fish, no eggs, hate sweet potatoes, no dairy">
+
+    <label style="margin-top: 10px;">Special Requests / Favorite Foods</label>
+    <input type="text" id="favFoods" placeholder="e.g. Ground beef, Sourdough bread, Sirloin steak, Jasmine rice">
+
+    <div class="section-title">5. Training Split Schedule</div>
+    <div class="toggle-container">
+      <label for="carbCyclingToggle">Enable High Carb Training / Low Carb Rest Days</label>
+      <input type="checkbox" id="carbCyclingToggle" onchange="document.getElementById('cyclingInputs').style.display = this.checked ? 'block' : 'none'">
+    </div>
+
+    <div id="cyclingInputs" style="display:none; margin-top:8px;">
+      <label>Training Days / Week</label>
       <select id="trainingDaysCount">
         <option value="3">3 Days Training / 4 Days Rest</option>
         <option value="4" selected>4 Days Training / 3 Days Rest</option>
@@ -102,52 +159,44 @@
       </select>
     </div>
 
-    <button class="btn-primary" onclick="runProgression()">Calculate Progression</button>
+    <button class="btn-primary" onclick="runCheckInEngine()">Generate Coaching Update & Meal Plan</button>
   </div>
 
-  <div id="resultsCard" class="card results-card">
-    <h2 style="font-size: 1.1rem; margin:0 0 4px;">New Target Protocol</h2>
-    <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom: 12px;" id="weeklySummaryText"></div>
+  <!-- Results Section -->
+  <div id="resultsContainer" style="display:none;">
+    <div class="card" style="border-left: 4px solid var(--accent);">
+      <h2 style="font-size: 1.1rem; margin:0 0 4px;">Adjusted Targets & Coaching Rationale</h2>
+      <div class="rationale" id="resRationale"></div>
 
-    <div id="flatTargets">
-      <div class="day-type-card">
-        <div class="day-title">Daily Baseline Targets (Every Day)</div>
-        <div class="macro-grid">
-          <div class="macro-box"><div class="macro-val" id="resCals">--</div><div class="macro-lbl">Calories</div></div>
-          <div class="macro-box"><div class="macro-val" id="resPro">--g</div><div class="macro-lbl">Protein</div></div>
-          <div class="macro-box"><div class="macro-val" id="resCarb">--g</div><div class="macro-lbl">Carbs</div></div>
-          <div class="macro-box"><div class="macro-val" id="resFat">--g</div><div class="macro-lbl">Fats</div></div>
-        </div>
+      <div id="tabSelection" class="tab-bar" style="display:none;">
+        <button class="tab-btn active" id="tabTrain" onclick="switchDayView('train')">🏋️ Training Day Plan</button>
+        <button class="tab-btn" id="tabRest" onclick="switchDayView('rest')">🧘 Rest Day Plan</button>
+      </div>
+
+      <div class="macro-grid">
+        <div class="macro-box"><div class="macro-val" id="viewCals">--</div><div class="macro-lbl">Calories</div></div>
+        <div class="macro-box"><div class="macro-val" id="viewPro">--g</div><div class="macro-lbl">Protein</div></div>
+        <div class="macro-box"><div class="macro-val" id="viewCarb">--g</div><div class="macro-lbl">Carbs</div></div>
+        <div class="macro-box"><div class="macro-val" id="viewFat">--g</div><div class="macro-lbl">Fats</div></div>
       </div>
     </div>
 
-    <div id="cycledTargets" style="display:none;">
-      <div class="day-type-card training-card">
-        <div class="day-title" style="color: var(--training);">🏋️ Training Days (High Carb) <span style="font-size:0.75rem; font-weight:400;" id="trainDaysBadge"></span></div>
-        <div class="macro-grid">
-          <div class="macro-box"><div class="macro-val" id="trainCals">--</div><div class="macro-lbl">Calories</div></div>
-          <div class="macro-box"><div class="macro-val" id="trainPro">--g</div><div class="macro-lbl">Protein</div></div>
-          <div class="macro-box"><div class="macro-val" id="trainCarb">--g</div><div class="macro-lbl">Carbs</div></div>
-          <div class="macro-box"><div class="macro-val" id="trainFat">--g</div><div class="macro-lbl">Fats</div></div>
-        </div>
+    <div id="flexTreatPanel" class="flex-card" style="display:none;">
+      <div class="flex-title">
+        <span>🍰 Flex Food Integration Protocol</span>
+        <span style="font-size:0.75rem; font-weight:600; background:var(--flex-color); color:#fff; padding:2px 8px; border-radius:10px;">1x / Week Strategy</span>
       </div>
-
-      <div class="day-type-card rest-card">
-        <div class="day-title" style="color: var(--rest);">🧘 Rest Days (Low Carb) <span style="font-size:0.75rem; font-weight:400;" id="restDaysBadge"></span></div>
-        <div class="macro-grid">
-          <div class="macro-box"><div class="macro-val" id="restCals">--</div><div class="macro-lbl">Calories</div></div>
-          <div class="macro-box"><div class="macro-val" id="restPro">--g</div><div class="macro-lbl">Protein</div></div>
-          <div class="macro-box"><div class="macro-val" id="restCarb">--g</div><div class="macro-lbl">Carbs</div></div>
-          <div class="macro-box"><div class="macro-val" id="restFat">--g</div><div class="macro-lbl">Fats</div></div>
-        </div>
-      </div>
+      <div class="flex-body" id="flexTreatText"></div>
     </div>
 
-    <label style="margin-top:14px;">Coaching Rationale</label>
-    <div class="rationale" id="resRationale"></div>
+    <div class="card">
+      <h2 style="font-size: 1.1rem; margin:0 0 4px;" id="matrixTitle">Complete Formulated Meal Plans</h2>
+      <p style="font-size:0.75rem; color:var(--text-muted); margin:0 0 12px;">Choose <strong>1 Complete Meal Option</strong> per meal time. Measure all foods in raw/uncooked weights.</p>
+      
+      <div id="mealMatrixContainer"></div>
 
-    <button class="btn-primary" style="background: var(--accent);" onclick="copyToClipboard()">Copy Targets to Clipboard</button>
-    <button class="btn-secondary" onclick="exportJSON()">Download Updated Plan (.json)</button>
+      <button class="btn-primary" style="background: var(--accent);" onclick="copyCompletePlan()">Copy Complete Protocol to Clipboard</button>
+    </div>
   </div>
 </div>
 
@@ -155,60 +204,55 @@
   let state = {
     phase: "fat_loss",
     currentWeight: null,
+    mealCount: 4,
     carbCycling: false,
     trainingDays: 4,
-    dailyBaseline: { calories: 2000, protein: 180, carbs: 180, fats: 60 },
+    dailyBaseline: null,
     trainingDayTargets: null,
-    restDayTargets: null
+    restDayTargets: null,
+    activeView: "baseline",
+    bioScores: { strength: 4, recovery: 4, digestion: 5, satiety: 4 }
   };
 
+  const TREAT_DATABASE = [
+    { key: "cheesecake", name: "Cheesecake (1 Standard Slice)", cals: 450, p: 8, c: 45, f: 28 },
+    { key: "pizza", name: "Pizza (2 Slices Thin/Regular)", cals: 520, p: 22, c: 58, f: 22 },
+    { key: "ice cream", name: "Ice Cream (1 Cup Premium)", cals: 380, p: 6, c: 42, f: 22 },
+    { key: "donut", name: "Donut / Pastry (1 Large)", cals: 320, p: 4, c: 38, f: 18 },
+    { key: "burger", name: "Restaurant Burger (with Bun)", cals: 600, p: 32, c: 45, f: 32 },
+    { key: "cookie", name: "Large Bakery Cookie", cals: 350, p: 4, c: 48, f: 16 }
+  ];
+
   window.onload = function() {
-    const saved = localStorage.getItem('trainer_macro_state');
+    const saved = localStorage.getItem('trainer_macro_cache');
     if (saved) {
       try {
-        state = JSON.parse(saved);
-        document.getElementById('phase').value = state.phase || 'fat_loss';
-        document.getElementById('prevWeight').value = state.currentWeight || '';
-        document.getElementById('currCals').value = state.dailyBaseline?.calories || '';
-        if (state.carbCycling) {
-          document.getElementById('carbCyclingToggle').checked = true;
-          document.getElementById('trainingDaysCount').value = state.trainingDays || 4;
-          toggleCyclingInputs();
-        }
-      } catch (e) {}
+        const d = JSON.parse(saved);
+        if (d.currentWeight) document.getElementById('prevWeight').value = d.currentWeight;
+        if (d.dailyBaseline?.calories) document.getElementById('currCals').value = d.dailyBaseline.calories;
+        if (d.phase) document.getElementById('phase').value = d.phase;
+        if (d.mealCount) document.getElementById('mealCount').value = d.mealCount;
+      } catch(e) {}
     }
   };
 
-  function toggleCyclingInputs() {
-    const isChecked = document.getElementById('carbCyclingToggle').checked;
-    document.getElementById('cyclingInputs').style.display = isChecked ? 'block' : 'none';
+  function toOz(grams) {
+    return (grams / 28.35).toFixed(1);
   }
 
-  function handleFile(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      state = JSON.parse(e.target.result);
-      document.getElementById('phase').value = state.phase || 'fat_loss';
-      document.getElementById('prevWeight').value = state.currentWeight || '';
-      document.getElementById('currCals').value = state.dailyBaseline?.calories || '';
-      if (state.carbCycling) {
-        document.getElementById('carbCyclingToggle').checked = true;
-        document.getElementById('trainingDaysCount').value = state.trainingDays || 4;
-        toggleCyclingInputs();
-      }
-      document.getElementById('fileLabel').innerText = `✓ Loaded: ${file.name}`;
-    };
-    reader.readAsText(file);
-  }
-
-  function runProgression() {
+  function runCheckInEngine() {
     const phase = document.getElementById('phase').value;
     const currW = parseFloat(document.getElementById('currWeight').value);
     const prevW = parseFloat(document.getElementById('prevWeight').value);
     const currC = parseInt(document.getElementById('currCals').value, 10);
     const adhr = parseInt(document.getElementById('adherence').value, 10);
+    const numMeals = parseInt(document.getElementById('mealCount').value, 10);
+    
+    const rStrength = parseInt(document.getElementById('rateStrength').value, 10);
+    const rRecovery = parseInt(document.getElementById('rateRecovery').value, 10);
+    const rDigestion = parseInt(document.getElementById('rateDigestion').value, 10);
+    const rDiet = parseInt(document.getElementById('rateDiet').value, 10);
+
     const isCycling = document.getElementById('carbCyclingToggle').checked;
     const trainDays = parseInt(document.getElementById('trainingDaysCount').value, 10);
     const restDays = 7 - trainDays;
@@ -223,27 +267,32 @@
     const pctChange = ((currW - prevW) / prevW) * 100;
 
     if (adhr < 5) {
-      rationale = `Weekly adherence was ${adhr}/7 days. Macro targets held steady to establish compliance before adjusting metabolic intake.`;
+      rationale = `Diet adherence was ${adhr}/7 days. Macros held steady to establish consistency before metabolic adjustments.`;
     } else {
       if (phase === "fat_loss") {
         if (pctChange > -0.3) {
-          newAvgCals = Math.round(currC * 0.92);
-          rationale = `Weight loss stalled (${pctChange.toFixed(2)}% change). Scaled average calories down 8% (~${currC - newAvgCals} kcal) to resume fat loss.`;
+          if (rRecovery <= 2 || rStrength <= 2) {
+            newAvgCals = Math.round(currC * 0.96);
+            rationale = `Weight loss stalled (${pctChange.toFixed(2)}%), but strength/recovery is depressed. Applied a conservative 4% drop to preserve training output.`;
+          } else {
+            newAvgCals = Math.round(currC * 0.92);
+            rationale = `Weight loss stalled (${pctChange.toFixed(2)}% change). Scaled calories down 8% (~${currC - newAvgCals} kcal) to restart fat loss.`;
+          }
         } else if (pctChange < -1.5) {
           newAvgCals = Math.round(currC * 1.05);
-          rationale = `Rate of loss is faster than desired (${Math.abs(pctChange).toFixed(2)}% drop). Increased average calories by 5% to protect lean tissue.`;
+          rationale = `Weight loss rate was too rapid (${Math.abs(pctChange).toFixed(2)}% drop). Increased calories 5% to protect lean tissue.`;
         } else {
-          rationale = `Weight loss is on target (${Math.abs(pctChange).toFixed(2)}% drop). Average calorie targets held steady.`;
+          rationale = `Fat loss rate is on track (${Math.abs(pctChange).toFixed(2)}% drop). Calorie targets held steady.`;
         }
       } else if (phase === "hypertrophy") {
         if (pctChange < 0.1) {
           newAvgCals = currC + 125;
-          rationale = `Surplus stalled (${pctChange.toFixed(2)}% change). Added 125 kcal daily.`;
+          rationale = `Scale weight stalled in surplus (${pctChange.toFixed(2)}% change). Added 125 kcal daily.`;
         } else if (pctChange > 0.6) {
           newAvgCals = currC - 75;
-          rationale = `Surplus progressing faster than optimal rate (${pctChange.toFixed(2)}% gain). Trimmed 75 kcal to limit excess fat storage.`;
+          rationale = `Surplus progressing faster than optimal lean tissue gain (${pctChange.toFixed(2)}% gain). Trimmed 75 kcal to minimize fat gain.`;
         } else {
-          rationale = `Muscle-gain surplus rate is right on track (${pctChange.toFixed(2)}% gain). Targets held steady.`;
+          rationale = `Hypertrophy surplus rate is right on track (${pctChange.toFixed(2)}% gain). Targets held steady.`;
         }
       } else {
         newAvgCals = currC + (pctChange < -0.5 ? 100 : (pctChange > 0.5 ? -100 : 0));
@@ -251,97 +300,539 @@
       }
     }
 
-    // Baseline Macros
+    if (rDigestion <= 2) {
+      rationale += ` Note: Digestion score was low (${rDigestion}/5)—the meal engine has automatically converted hard/dense starches into faster-digesting functional carbs and juices to reduce gut load.`;
+    }
+
     const pro = Math.round(currW * 1.0);
     const baseFat = Math.max(45, Math.round((newAvgCals * 0.25) / 9));
     const baseCarb = Math.max(50, Math.round((newAvgCals - (pro * 4) - (baseFat * 9)) / 4));
     const resolvedBaseCals = (pro * 4) + (baseCarb * 4) + (baseFat * 9);
     const weeklyBudget = resolvedBaseCals * 7;
 
-    let trainTargets = null;
-    let restTargets = null;
+    state = {
+      phase,
+      currentWeight: currW,
+      mealCount: numMeals,
+      carbCycling: isCycling,
+      trainingDays: trainDays,
+      dailyBaseline: { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat },
+      trainingDayTargets: null,
+      restDayTargets: null,
+      activeView: isCycling ? "train" : "baseline",
+      bioScores: { strength: rStrength, recovery: rRecovery, digestion: rDigestion, satiety: rDiet }
+    };
+
+    localStorage.setItem('trainer_macro_cache', JSON.stringify(state));
 
     if (isCycling) {
-      // Training Day: +10% over average daily baseline
       const rawTrainCals = Math.round(resolvedBaseCals * 1.10);
-      // Rest Day: absorbs remaining weekly budget exactly
       const rawRestCals = Math.round((weeklyBudget - (trainDays * rawTrainCals)) / restDays);
 
-      // Training Macros (Higher Carb, 20% Fat)
       const trainFat = Math.max(40, Math.round((rawTrainCals * 0.20) / 9));
       const trainCarb = Math.max(60, Math.round((rawTrainCals - (pro * 4) - (trainFat * 9)) / 4));
       const trainCals = (pro * 4) + (trainCarb * 4) + (trainFat * 9);
 
-      // Rest Macros (Lower Carb, 30% Fat)
       const restFat = Math.max(45, Math.round((rawRestCals * 0.30) / 9));
       const restCarb = Math.max(30, Math.round((rawRestCals - (pro * 4) - (restFat * 9)) / 4));
       const restCals = (pro * 4) + (restCarb * 4) + (restFat * 9);
 
-      trainTargets = { calories: trainCals, protein: pro, carbs: trainCarb, fats: trainFat };
-      restTargets = { calories: restCals, protein: pro, carbs: restCarb, fats: restFat };
-
-      document.getElementById('trainDaysBadge').innerText = `(${trainDays}x / week)`;
-      document.getElementById('restDaysBadge').innerText = `(${restDays}x / week)`;
-
-      document.getElementById('trainCals').innerText = trainCals;
-      document.getElementById('trainPro').innerText = `${pro}g`;
-      document.getElementById('trainCarb').innerText = `${trainCarb}g`;
-      document.getElementById('trainFat').innerText = `${trainFat}g`;
-
-      document.getElementById('restCals').innerText = restCals;
-      document.getElementById('restPro').innerText = `${pro}g`;
-      document.getElementById('restCarb').innerText = `${restCarb}g`;
-      document.getElementById('restFat').innerText = `${restFat}g`;
-
-      document.getElementById('flatTargets').style.display = 'none';
-      document.getElementById('cycledTargets').style.display = 'block';
-      document.getElementById('weeklySummaryText').innerText = `Weekly Budget: ${(trainCals * trainDays + restCals * restDays).toLocaleString()} kcal across 7 days`;
+      state.trainingDayTargets = { calories: trainCals, protein: pro, carbs: trainCarb, fats: trainFat };
+      state.restDayTargets = { calories: restCals, protein: pro, carbs: restCarb, fats: restFat };
+      
+      document.getElementById('tabSelection').style.display = 'flex';
+      switchDayView('train');
     } else {
-      document.getElementById('resCals').innerText = resolvedBaseCals;
-      document.getElementById('resPro').innerText = `${pro}g`;
-      document.getElementById('resCarb').innerText = `${baseCarb}g`;
-      document.getElementById('resFat').innerText = `${baseFat}g`;
-
-      document.getElementById('flatTargets').style.display = 'block';
-      document.getElementById('cycledTargets').style.display = 'none';
-      document.getElementById('weeklySummaryText').innerText = `Weekly Budget: ${(resolvedBaseCals * 7).toLocaleString()} kcal (Flat daily distribution)`;
+      document.getElementById('tabSelection').style.display = 'none';
+      renderMealPlan(state.dailyBaseline);
     }
 
-    state = {
-      phase,
-      currentWeight: currW,
-      carbCycling: isCycling,
-      trainingDays: trainDays,
-      dailyBaseline: { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat },
-      trainingDayTargets: trainTargets,
-      restDayTargets: restTargets,
-      lastUpdated: new Date().toISOString().split('T')[0]
-    };
-
-    localStorage.setItem('trainer_macro_state', JSON.stringify(state));
+    processFoodRequests(resolvedBaseCals, pro);
 
     document.getElementById('resRationale').innerText = rationale;
-    document.getElementById('resultsCard').style.display = 'block';
+    document.getElementById('resultsContainer').style.display = 'block';
   }
 
-  function copyToClipboard() {
-    let text = "";
-    if (state.carbCycling) {
-      text = `Weekly Macro Protocol:\n\n🏋️ TRAINING DAYS (${state.trainingDays}x/week):\nCalories: ${state.trainingDayTargets.calories} kcal\nProtein: ${state.trainingDayTargets.protein}g | Carbs: ${state.trainingDayTargets.carbs}g | Fats: ${state.trainingDayTargets.fats}g\n\n🧘 REST DAYS (${7 - state.trainingDays}x/week):\nCalories: ${state.restDayTargets.calories} kcal\nProtein: ${state.restDayTargets.protein}g | Carbs: ${state.restDayTargets.carbs}g | Fats: ${state.restDayTargets.fats}g`;
-    } else {
-      text = `Daily Macro Protocol:\nCalories: ${state.dailyBaseline.calories} kcal\nProtein: ${state.dailyBaseline.protein}g | Carbs: ${state.dailyBaseline.carbs}g | Fats: ${state.dailyBaseline.fats}g`;
+  function processFoodRequests(dailyCals, proteinTarget) {
+    const rawReq = document.getElementById('favFoods').value.toLowerCase();
+    const flexPanel = document.getElementById('flexTreatPanel');
+    const flexText = document.getElementById('flexTreatText');
+
+    if (!rawReq.trim()) {
+      flexPanel.style.display = 'none';
+      return;
     }
-    navigator.clipboard.writeText(text).then(() => alert("Targets copied to clipboard!"));
+
+    const matchedTreat = TREAT_DATABASE.find(t => rawReq.includes(t.key));
+
+    if (matchedTreat) {
+      const dailyTrim = Math.round(matchedTreat.cals / 6);
+      const sameDayCarbDrop = Math.round(matchedTreat.c * 0.8);
+      const sameDayFatDrop = Math.round(matchedTreat.f * 0.8);
+
+      flexText.innerHTML = `
+        You requested <strong>${matchedTreat.name}</strong> (~${matchedTreat.cals} kcal | ${matchedTreat.p}g P / ${matchedTreat.c}g C / ${matchedTreat.f}g F). 
+        To fit this without sabotaging your ${state.phase.replace('_', ' ')} goal, do <strong>NOT</strong> put it in daily rotation. Use one of these two balancing options:
+        <ul style="margin: 8px 0 0 16px; padding: 0;">
+          <li><strong>Option A (Weekly Buffer):</strong> Reduce daily intake by <strong>~${dailyTrim} kcal/day</strong> on your other 6 days. Enjoy your treat on Day 7 at zero net surplus.</li>
+          <li><strong>Option B (Single-Day Swap):</strong> On the day you have it, remove <strong>${sameDayCarbDrop}g carbs</strong> and <strong>${sameDayFatDrop}g fats</strong> across your daytime meals, while keeping your full <strong>${proteinTarget}g Protein</strong> locked in.</li>
+        </ul>
+      `;
+      flexPanel.style.display = 'block';
+    } else {
+      flexPanel.style.display = 'none';
+    }
   }
 
-  function exportJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
-    const dl = document.createElement('a');
-    dl.setAttribute("href", dataStr);
-    dl.setAttribute("download", `macro_plan_${state.lastUpdated}.json`);
-    document.body.appendChild(dl);
-    dl.click();
-    dl.remove();
+  function switchDayView(type) {
+    state.activeView = type;
+    document.getElementById('tabTrain').className = `tab-btn ${type === 'train' ? 'active' : ''}`;
+    document.getElementById('tabRest').className = `tab-btn ${type === 'rest' ? 'active' : ''}`;
+    const targetObj = type === 'train' ? state.trainingDayTargets : state.restDayTargets;
+    renderMealPlan(targetObj);
+  }
+
+  const FUNCTIONAL_CATEGORIES = [
+    {
+      group: "Dark Polyphenol & Nitric Oxide Category",
+      liquidOptions: "Pomegranate juice, Beetroot juice, Tart cherry juice, or Concord grape juice",
+      wholeOptions: "Blackberries, Wild blueberries, Dark sweet cherries, Raspberries, or Roasted red beets",
+      produceOptions: "Baby spinach, Swiss chard, Arugula, or Steamed kale"
+    },
+    {
+      group: "Citrus, Vitamin C & Enzyme Category",
+      liquidOptions: "100% Orange juice, Grapefruit juice, Fresh pineapple juice, or Cold-pressed lemonade",
+      wholeOptions: "Kiwi, Sliced strawberries, Diced mango, Cantaloupe, or Fresh orange wedges",
+      produceOptions: "Red/yellow bell peppers, Steamed broccoli, Cauliflower, or Brussels sprouts"
+    },
+    {
+      group: "Electrolyte, Potassium & Hydration Category",
+      liquidOptions: "100% Pure coconut water, Simmered bone broth, Sports electrolyte beverage, or Apple cider",
+      wholeOptions: "Banana, Honeydew melon, Watermelon, Dried apricots, or Medjool dates",
+      produceOptions: "Grilled asparagus, Sautéed zucchini, Yellow squash, Celery, or Sliced cucumbers"
+    },
+    {
+      group: "Anthocyanin & Recovery Category",
+      liquidOptions: "100% Tart cherry juice, Cranberry juice (100% pure), or Antioxidant tea blend with honey",
+      wholeOptions: "Dark sweet cherries, Red plums, Pomegranate arils, or Mixed dark berries",
+      produceOptions: "Steamed green beans, Sautéed zucchini, Mixed dark greens, or Roasted asparagus"
+    }
+  ];
+
+  function renderMealPlan(macros) {
+    document.getElementById('viewCals').innerText = macros.calories;
+    document.getElementById('viewPro').innerText = `${macros.protein}g`;
+    document.getElementById('viewCarb').innerText = `${macros.carbs}g`;
+    document.getElementById('viewFat').innerText = `${macros.fats}g`;
+
+    const restrictionsText = document.getElementById('dietRestrictions').value.toLowerCase();
+    const favText = document.getElementById('favFoods').value.toLowerCase();
+    const numMeals = state.mealCount;
+    
+    // Biofeedback conditions for converting dense whole starches to liquid carbs
+    const poorDigestion = state.bioScores.digestion <= 2;
+    const poorAppetite = state.bioScores.satiety <= 2;
+    const heavySurplus = state.phase === 'hypertrophy' && macros.calories >= 3000;
+    const needsLiquidShift = poorDigestion || (poorAppetite && state.phase === 'hypertrophy') || heavySurplus;
+
+    document.getElementById('matrixTitle').innerText = `Complete Formulated Meal Plans (${numMeals} Meals / Day)`;
+
+    const container = document.getElementById('mealMatrixContainer');
+    container.innerHTML = '';
+
+    const pTgt = Math.round(macros.protein / numMeals);
+    const cTgt = Math.round(macros.carbs / numMeals);
+    const fTgt = Math.round(macros.fats / numMeals);
+
+    function resolveFunctionalCarbsAndProduce(carbsRemaining, mealIndex) {
+      const activeCategory = FUNCTIONAL_CATEGORIES[(mealIndex - 1) % FUNCTIONAL_CATEGORIES.length];
+      let addOns = [];
+
+      if (carbsRemaining > 0) {
+        if (needsLiquidShift) {
+          const juiceOz = Math.round(carbsRemaining / 3.5);
+          addOns.push(`<strong>Fast-Digesting Fluid (${activeCategory.group}):</strong> ${juiceOz} fl oz of your choice (${activeCategory.liquidOptions}) <em>[Liquid shift enabled to relieve gut volume]</em>`);
+        } else {
+          const fruitG = Math.round(carbsRemaining / 0.12);
+          addOns.push(`<strong>Whole Fruit Addition (${activeCategory.group}):</strong> ${fruitG}g (~${toOz(fruitG)} oz) of your choice (${activeCategory.wholeOptions})`);
+        }
+      }
+
+      return {
+        carbItems: addOns,
+        produceItem: `<strong>Produce Profile (${activeCategory.group}):</strong> 1-2 cups of your choice (${activeCategory.produceOptions})`
+      };
+    }
+
+    const MASTER_MEAL_RECIPES = {
+      breakfast: [
+        {
+          name: "Option 1: Scramble, Sourdough Toast & Functional Fruit/Liquid",
+          keywords: ["egg", "toast", "sourdough"],
+          build: (p, c, f, mealIdx) => {
+            const wholeEggs = f >= 10 ? 2 : (f >= 5 ? 1 : 0);
+            const fatFromEggs = wholeEggs * 5;
+            const proFromEggs = wholeEggs * 6;
+
+            // Inherent Fat Subtraction
+            const addedFatNeeded = Math.max(0, f - fatFromEggs);
+
+            // Starch-first allocation: Sourdough handles 80-100% of carbs
+            const starchRatio = needsLiquidShift ? 0.60 : 0.85;
+            const carbsForBread = Math.round(c * starchRatio);
+            const toastSlices = Math.max(1, Math.round(carbsForBread / 15));
+            const carbsFromToast = toastSlices * 15;
+            const proFromToast = toastSlices * 3;
+            let carbsRemaining = Math.max(0, c - carbsFromToast);
+
+            const eggWhiteGrams = Math.max(50, Math.round((p - proFromEggs - proFromToast) / 0.11));
+            const oilTsp = (addedFatNeeded / 4.5).toFixed(1);
+
+            let items = [];
+            if (wholeEggs > 0) items.push(`<strong>Whole Eggs:</strong> ${wholeEggs} large (${fatFromEggs}g inherent fat)`);
+            items.push(`<strong>Liquid Egg Whites (Raw):</strong> ${eggWhiteGrams}g (~${toOz(eggWhiteGrams)} oz)`);
+            items.push(`<strong>Sourdough Bread:</strong> ${toastSlices} slices toasted (${carbsFromToast}g carbs)`);
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+
+            if (addedFatNeeded > 2) {
+              items.push(`<strong>Added Fat (Grass-Fed Butter / Olive Oil):</strong> ${oilTsp} tsp [Deducted ${fatFromEggs}g egg fat]`);
+            } else {
+              items.push(`<strong>Added Cooking Fat:</strong> None needed (Meal fat target covered by whole eggs)`);
+            }
+
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        },
+        {
+          name: "Option 2: High-Protein Oatmeal Power Bowl (Milk Deducted)",
+          keywords: ["oat", "oatmeal", "whey", "peanut butter", "berries", "milk", "fairlife"],
+          build: (p, c, f, mealIdx) => {
+            let workingP = p;
+            let workingC = c;
+            let workingF = f;
+            let milkItem = null;
+
+            if (needsLiquidShift && !restrictionsText.includes("dairy")) {
+              const milkOz = 8;
+              const milkPro = 13;
+              const milkCarb = 6;
+              const milkFat = 4.5;
+
+              workingP = Math.max(15, workingP - milkPro);
+              workingC = Math.max(10, workingC - milkCarb);
+              workingF = Math.max(0, workingF - milkFat);
+              milkItem = `<strong>Fairlife 2% / Whole Milk (Base for Oats/Shake):</strong> ${milkOz} fl oz (Pre-deducted: 13g P, 6g C, 4.5g F)`;
+            }
+
+            // Whole Starch: Rolled oats (80g = 1 cup, 40g = 1/2 cup)
+            const starchRatio = needsLiquidShift ? 0.70 : 0.90;
+            const carbsForOats = Math.round(workingC * starchRatio);
+            const dryOatsGrams = Math.round(carbsForOats / 0.68);
+            const oatsHalfCups = (dryOatsGrams / 40).toFixed(1);
+            const carbsFromOats = Math.round(dryOatsGrams * 0.68);
+            const proFromOats = Math.round(dryOatsGrams * 0.13);
+            const fatFromOats = Math.round(dryOatsGrams * 0.06);
+
+            let carbsRemaining = Math.max(0, workingC - carbsFromOats);
+            const addedFatNeeded = Math.max(0, workingF - fatFromOats);
+
+            const pbGrams = Math.round(addedFatNeeded / 0.50);
+            const proFromPB = Math.round(pbGrams * 0.25);
+            const wheyGrams = Math.max(15, Math.round((workingP - proFromOats - proFromPB) / 0.75));
+
+            let items = [];
+            if (milkItem) items.push(milkItem);
+            items.push(`<strong>Rolled Oats (Dry):</strong> ${dryOatsGrams}g (~${oatsHalfCups} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups)`);
+            items.push(`<strong>Whey / Plant Protein:</strong> ${wheyGrams}g (~${(wheyGrams / 25).toFixed(1)} scoops stirred in)`);
+            if (pbGrams > 0) items.push(`<strong>All-Natural Peanut / Almond Butter:</strong> ${pbGrams}g (~${(pbGrams / 16).toFixed(1)} tbsp) [Deducted ${fatFromOats}g oat fat]`);
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            return items;
+          }
+        },
+        {
+          name: "Option 3: Greek Yogurt & Cream of Rice Parfait",
+          keywords: ["yogurt", "greek yogurt", "cream of rice", "cor", "dairy"],
+          build: (p, c, f, mealIdx) => {
+            const starchRatio = needsLiquidShift ? 0.70 : 0.90;
+            const carbsForCor = Math.round(c * starchRatio);
+            const corGrams = Math.round(carbsForCor / 0.80);
+            const carbsRemaining = Math.max(0, c - Math.round(corGrams * 0.80));
+            const fatGrams = Math.round(f / 0.50);
+            const greekYogurtGrams = Math.max(120, Math.round(p / 0.10));
+
+            let items = [
+              `<strong>0% Plain Greek Yogurt:</strong> ${greekYogurtGrams}g (~${toOz(greekYogurtGrams)} oz)`,
+              `<strong>Cream of Rice (Dry Measure):</strong> ${corGrams}g (~${toOz(corGrams)} oz)`,
+              `<strong>Almonds / Walnuts / Chia Seeds:</strong> ${fatGrams}g (~${toOz(fatGrams)} oz)`
+            ];
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            return items;
+          }
+        }
+      ],
+      lunch: [
+        {
+          name: "Option 1: Chicken Breast & Jasmine Rice Bowl",
+          keywords: ["chicken", "rice", "jasmine rice"],
+          build: (p, c, f, mealIdx) => {
+            // Starch fulfillment: Jasmine Rice covers 85-100%
+            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
+            const carbsForRice = Math.round(c * starchRatio);
+            const riceGrams = Math.round(carbsForRice / 0.80);
+            const carbsFromRice = Math.round(riceGrams * 0.80);
+            const proFromRice = Math.round(riceGrams * 0.07);
+
+            const chickenGrams = Math.round((p - proFromRice) / 0.23);
+            const inherentChickenFat = Math.round(chickenGrams * 0.025); // ~2.5% fat in lean breast
+            const addedFatNeeded = Math.max(0, f - inherentChickenFat);
+            const oilTsp = (addedFatNeeded / 4.5).toFixed(1);
+
+            let carbsRemaining = Math.max(0, c - carbsFromRice);
+            let items = [
+              `<strong>Chicken Breast (Raw):</strong> ${chickenGrams}g (~${toOz(chickenGrams)} oz)`,
+              `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry)`,
+              `<strong>Added Extra Virgin Olive Oil:</strong> ${oilTsp} tsp drizzle [Deducted ${inherentChickenFat}g inherent chicken fat]`
+            ];
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        },
+        {
+          name: "Option 2: 93/7 Ground Turkey & Diced Potato Hash",
+          keywords: ["turkey", "ground turkey", "potato", "avocado"],
+          build: (p, c, f, mealIdx) => {
+            const starchRatio = needsLiquidShift ? 0.60 : 0.85;
+            const carbsForPot = Math.round(c * starchRatio);
+            const potatoGrams = Math.round(carbsForPot / 0.17);
+            const carbsFromPot = Math.round(potatoGrams * 0.17);
+            const proFromPot = Math.round(potatoGrams * 0.02);
+
+            const turkeyGrams = Math.round((p - proFromPot) / 0.20);
+            const inherentTurkeyFat = Math.round(turkeyGrams * 0.07); // 7% fat in 93/7
+            const addedFatNeeded = Math.max(0, f - inherentTurkeyFat);
+            const avoGrams = Math.round(addedFatNeeded / 0.15);
+
+            let carbsRemaining = Math.max(0, c - carbsFromPot);
+            let items = [
+              `<strong>93/7 Lean Ground Turkey (Raw):</strong> ${turkeyGrams}g (~${toOz(turkeyGrams)} oz) [Contains ${inherentTurkeyFat}g inherent fat]`,
+              `<strong>Red / Russet Potatoes (Raw Diced):</strong> ${potatoGrams}g (~${toOz(potatoGrams)} oz)`
+            ];
+
+            if (addedFatNeeded > 2) {
+              items.push(`<strong>Added Fresh Avocado / Oil:</strong> ${avoGrams}g avocado (~${(addedFatNeeded / 4.5).toFixed(1)} tsp oil)`);
+            } else {
+              items.push(`<strong>Added Fat:</strong> None needed (Meal fat target covered by 93/7 turkey)`);
+            }
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        },
+        {
+          name: "Option 3: Lean Fish, Rice Noodles & Performance Pairing",
+          keywords: ["fish", "cod", "tilapia", "pasta", "noodles"],
+          build: (p, c, f, mealIdx) => {
+            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
+            const carbsForPasta = Math.round(c * starchRatio);
+            const pastaGrams = Math.round(carbsForPasta / 0.75);
+            const carbsFromPasta = Math.round(pastaGrams * 0.75);
+            const proFromPasta = Math.round(pastaGrams * 0.08);
+
+            const fishGrams = Math.round((p - proFromPasta) / 0.18);
+            const inherentFishFat = Math.round(fishGrams * 0.02);
+            const addedFatNeeded = Math.max(0, f - inherentFishFat);
+            const oilTsp = (addedFatNeeded / 4.5).toFixed(1);
+
+            let carbsRemaining = Math.max(0, c - carbsFromPasta);
+            let items = [
+              `<strong>Cod / Tilapia / White Fish (Raw):</strong> ${fishGrams}g (~${toOz(fishGrams)} oz)`,
+              `<strong>Rice Noodles / Gluten-Free Pasta (Dry):</strong> ${pastaGrams}g (~${toOz(pastaGrams)} oz)`,
+              `<strong>Added Extra Virgin Olive Oil:</strong> ${oilTsp} tsp [Deducted ${inherentFishFat}g fish fat]`
+            ];
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        }
+      ],
+      dinner: [
+        {
+          name: "Option 1: Top Sirloin Steak & Roasted Sweet Potato",
+          keywords: ["steak", "sirloin", "sweet potato", "butter"],
+          build: (p, c, f, mealIdx) => {
+            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
+            const carbsForSP = Math.round(c * starchRatio);
+            const sweetPotGrams = Math.round(carbsForSP / 0.20);
+            const carbsFromSP = Math.round(sweetPotGrams * 0.20);
+
+            const steakGrams = Math.round(p / 0.22);
+            const inherentSteakFat = Math.round(steakGrams * 0.055); // ~5.5% fat in top sirloin
+            const addedFatNeeded = Math.max(0, f - inherentSteakFat);
+            const butterTsp = (addedFatNeeded / 4.5).toFixed(1);
+
+            let carbsRemaining = Math.max(0, c - carbsFromSP);
+            let items = [
+              `<strong>Top Sirloin Steak (Raw):</strong> ${steakGrams}g (~${toOz(steakGrams)} oz) [Contains ${inherentSteakFat}g inherent fat]`,
+              `<strong>Sweet Potato / Yams (Raw):</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz)`
+            ];
+
+            if (addedFatNeeded > 2) {
+              items.push(`<strong>Added Grass-Fed Butter / Ghee:</strong> ${butterTsp} tsp on potato [Deducted ${inherentSteakFat}g steak fat]`);
+            } else {
+              items.push(`<strong>Added Fat:</strong> None needed (Meal fat covered by sirloin steak)`);
+            }
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        },
+        {
+          name: "Option 2: 93/7 Lean Ground Beef & Jasmine Rice Bowl",
+          keywords: ["ground beef", "beef", "rice", "avocado"],
+          build: (p, c, f, mealIdx) => {
+            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
+            const carbsForRice = Math.round(c * starchRatio);
+            const riceGrams = Math.round(carbsForRice / 0.80);
+            const carbsFromRice = Math.round(riceGrams * 0.80);
+            const proFromRice = Math.round(riceGrams * 0.07);
+
+            const beefGrams = Math.round((p - proFromRice) / 0.21);
+            const inherentBeefFat = Math.round(beefGrams * 0.075); // 7.5% fat in 93/7 beef
+            const addedFatNeeded = Math.max(0, f - inherentBeefFat);
+            const avoGrams = Math.round(addedFatNeeded / 0.15);
+
+            let carbsRemaining = Math.max(0, c - carbsFromRice);
+            let items = [
+              `<strong>93/7 Lean Ground Beef (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [Contains ${inherentBeefFat}g inherent fat]`,
+              `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry)`
+            ];
+
+            if (addedFatNeeded > 2) {
+              items.push(`<strong>Added Fresh Avocado / Olive Oil:</strong> ${avoGrams}g avocado (~${(addedFatNeeded / 4.5).toFixed(1)} tsp oil)`);
+            } else {
+              items.push(`<strong>Added Fat:</strong> None needed (Meal fat fully covered by 93/7 beef fat: ${inherentBeefFat}g)`);
+            }
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        },
+        {
+          name: "Option 3: Atlantic Salmon & Yukon Gold Potato Mash",
+          keywords: ["salmon", "fish", "potato"],
+          build: (p, c, f, mealIdx) => {
+            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
+            const carbsForPot = Math.round(c * starchRatio);
+            const potGrams = Math.round(carbsForPot / 0.17);
+            const carbsFromPot = Math.round(potGrams * 0.17);
+
+            const salmonGrams = Math.round(p / 0.20);
+            const inherentSalmonFat = Math.round(salmonGrams * 0.13); // ~13% fat in salmon
+            const addedFatNeeded = Math.max(0, f - inherentSalmonFat);
+
+            let carbsRemaining = Math.max(0, c - carbsFromPot);
+            let items = [
+              `<strong>Atlantic Salmon Fillet (Raw):</strong> ${salmonGrams}g (~${toOz(salmonGrams)} oz) [Contains ${inherentSalmonFat}g inherent omega-3 fats]`,
+              `<strong>Yukon Gold Potatoes (Raw):</strong> ${potGrams}g (~${toOz(potGrams)} oz)`
+            ];
+
+            if (addedFatNeeded > 2) {
+              items.push(`<strong>Added Fat:</strong> ${(addedFatNeeded / 4.5).toFixed(1)} tsp olive oil [Deducted ${inherentSalmonFat}g salmon fat]`);
+            } else {
+              items.push(`<strong>Added Fat:</strong> None needed (Salmon naturally covers/exceeds meal fat requirement: ${inherentSalmonFat}g)`);
+            }
+
+            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
+            items.push(...functionalData.carbItems);
+            items.push(functionalData.produceItem);
+            return items;
+          }
+        }
+      ]
+    };
+
+    function filterRecipes(list) {
+      return list.filter(recipe => {
+        if (restrictionsText) {
+          const isRestricted = recipe.keywords.some(k => restrictionsText.includes(k));
+          if (isRestricted) return false;
+        }
+        return true;
+      });
+    }
+
+    for (let i = 1; i <= numMeals; i++) {
+      let recipeSet;
+      let title;
+
+      if (i === 1) {
+        recipeSet = MASTER_MEAL_RECIPES.breakfast;
+        title = numMeals === 2 ? "Meal 1: Breakfast / Fast-Breaking Window" : "Meal 1: Breakfast";
+      } else if (i === numMeals) {
+        recipeSet = MASTER_MEAL_RECIPES.dinner;
+        title = `Meal ${i}: Dinner & Recovery`;
+      } else {
+        recipeSet = MASTER_MEAL_RECIPES.lunch;
+        title = numMeals === 3 ? "Meal 2: Lunch" : `Meal ${i}: Lunch / Midday Meal ${i - 1}`;
+      }
+
+      const validRecipes = filterRecipes(recipeSet);
+      const mealDiv = document.createElement('div');
+      mealDiv.className = 'meal-block';
+
+      let recipesHTML = validRecipes.map(recipe => {
+        const ingredients = recipe.build(pTgt, cTgt, fTgt, i);
+        const listItems = ingredients.map(ing => `<li>• ${ing}</li>`).join('');
+        return `
+          <div class="recipe-card">
+            <div class="recipe-title">
+              <span>${recipe.name}</span>
+            </div>
+            <ul class="recipe-ingredients">${listItems}</ul>
+          </div>
+        `;
+      }).join('');
+
+      mealDiv.innerHTML = `
+        <div class="meal-block-header">
+          <span>${title}</span>
+          <span class="meal-target-pill">${pTgt}g Protein · ${cTgt}g Carbs · ${fTgt}g Fat</span>
+        </div>
+        ${recipesHTML || '<div style="font-size:0.8rem; color:#94a3b8;">No recipes match current restrictions.</div>'}
+      `;
+
+      container.appendChild(mealDiv);
+    }
+  }
+
+  function copyCompletePlan() {
+    let t = `FORMULATED NUTRITION PROTOCOL (${state.mealCount} Meals/Day)\n`;
+    if (state.carbCycling) {
+      t += `TRAINING DAYS (${state.trainingDays}x/wk): ${state.trainingDayTargets.calories} kcal (P: ${state.trainingDayTargets.protein}g | C: ${state.trainingDayTargets.carbs}g | F: ${state.trainingDayTargets.fats}g)\n`;
+      t += `REST DAYS (${7 - state.trainingDays}x/wk): ${state.restDayTargets.calories} kcal (P: ${state.restDayTargets.protein}g | C: ${state.restDayTargets.carbs}g | F: ${state.restDayTargets.fats}g)\n`;
+    } else {
+      t += `DAILY TARGETS: ${state.dailyBaseline.calories} kcal (P: ${state.dailyBaseline.protein}g | C: ${state.dailyBaseline.carbs}g | F: ${state.dailyBaseline.fats}g)\n`;
+    }
+    t += `\nGuidelines: Choose 1 full meal option per time slot. Measure all food in raw, uncooked weights. Whole starches are prioritized for 80-100% of carbs, and inherent meat/egg fat is subtracted from all added cooking oils.`;
+    navigator.clipboard.writeText(t).then(() => alert("Complete protocol copied to clipboard!"));
   }
 </script>
 </body>
