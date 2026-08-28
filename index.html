@@ -13,11 +13,12 @@
       --text-muted: #94a3b8;
       --primary: #3b82f6;
       --accent: #10b981;
+      --warning: #f59e0b;
       --flex-color: #ec4899;
     }
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--bg); color: var(--text-main); margin: 0; padding: 16px 12px; display: flex; justify-content: center; }
-    .container { width: 100%; max-width: 640px; }
+    .container { width: 100%; max-width: 680px; }
     .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px; margin-bottom: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2); }
     h1 { font-size: 1.25rem; font-weight: 700; margin: 0 0 4px; text-align: center; }
     p.subtitle { font-size: 0.8rem; color: var(--text-muted); text-align: center; margin: 0 0 16px; }
@@ -38,8 +39,9 @@
     .toggle-container label { margin: 0; font-size: 0.8rem; cursor: pointer; }
     .toggle-container input[type="checkbox"] { width: 18px; height: 18px; }
 
-    .btn-primary { background: var(--primary); color: #fff; font-weight: 700; border: none; border-radius: 8px; padding: 14px; width: 100%; cursor: pointer; font-size: 1rem; margin-top: 14px; }
-    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); color: #fff; font-weight: 700; border: none; border-radius: 8px; padding: 14px; width: 100%; cursor: pointer; font-size: 1rem; margin-top: 14px; transition: opacity 0.2s; }
+    .btn-secondary { background: #334155; color: #fff; font-weight: 600; border: none; border-radius: 8px; padding: 12px; width: 100%; cursor: pointer; font-size: 0.9rem; margin-top: 8px; }
+    .btn-primary:hover, .btn-secondary:hover { opacity: 0.9; }
     
     .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; text-align: center; margin: 8px 0; }
     .macro-box { background: #0f172a; border: 1px solid var(--card-border); border-radius: 6px; padding: 8px 2px; }
@@ -47,35 +49,63 @@
     .macro-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
 
     .rationale { font-size: 0.85rem; line-height: 1.45; color: #e2e8f0; background: #0f172a; padding: 12px; border-radius: 8px; margin: 10px 0; }
+    .disclaimer-banner { font-size: 0.8rem; line-height: 1.4; color: #fef08a; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); padding: 10px 12px; border-radius: 8px; margin: 10px 0; display: none; }
 
     .tab-bar { display: flex; gap: 6px; margin: 12px 0 6px; }
     .tab-btn { flex: 1; padding: 10px; font-size: 0.85rem; font-weight: 700; border-radius: 6px; border: 1px solid var(--card-border); background: #0f172a; color: var(--text-muted); cursor: pointer; }
     .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
+    /* Meal Block & Interactive Radio Cards */
     .meal-block { background: #0f172a; border: 1px solid var(--card-border); border-radius: 10px; padding: 14px; margin-top: 14px; }
     .meal-block-header { font-size: 1rem; font-weight: 700; color: #fff; display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 6px; margin-bottom: 10px; }
     .meal-target-pill { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
 
-    .recipe-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 12px; margin-bottom: 10px; }
-    .recipe-title { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 6px; display: flex; justify-content: space-between; }
-    .recipe-ingredients { list-style: none; padding-left: 0; margin: 0; font-size: 0.8rem; line-height: 1.5; color: #cbd5e1; }
+    .recipe-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 8px; transition: all 0.2s ease; cursor: pointer; }
+    .recipe-card.selected { border-color: var(--accent); background: rgba(16, 185, 129, 0.08); box-shadow: 0 0 0 1px var(--accent); }
+    .recipe-card.dimmed { opacity: 0.45; }
+    .recipe-title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .recipe-title input[type="radio"] { width: 16px; height: 16px; margin: 0; cursor: pointer; accent-color: var(--accent); }
+    .recipe-ingredients { list-style: none; padding-left: 24px; margin: 0; font-size: 0.8rem; line-height: 1.5; color: #cbd5e1; }
     .recipe-ingredients li { margin-bottom: 3px; }
     .recipe-ingredients strong { color: #f8fafc; }
+
+    details.swap-sheet { margin-top: 8px; background: #1e293b; border: 1px dashed var(--card-border); border-radius: 6px; padding: 6px 10px; font-size: 0.75rem; color: #cbd5e1; }
+    details.swap-sheet summary { font-weight: 600; color: var(--primary); cursor: pointer; outline: none; }
+    details.swap-sheet ul { margin: 6px 0 0; padding-left: 18px; line-height: 1.45; }
 
     .flex-card { background: rgba(236, 72, 153, 0.08); border: 1px solid var(--flex-color); border-radius: 10px; padding: 14px; margin-top: 14px; }
     .flex-title { font-size: 0.95rem; font-weight: 700; color: var(--flex-color); margin: 0 0 6px; display: flex; justify-content: space-between; align-items: center; }
     .flex-body { font-size: 0.8rem; line-height: 1.45; color: #f1f5f9; }
+
+    @media print {
+      body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+      .container { max-width: 100% !important; }
+      .no-print, #checkInCard, .btn-primary, .btn-secondary, .tab-bar, details.swap-sheet { display: none !important; }
+      .card { border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; background: transparent !important; }
+      .macro-box { border: 1px solid #cbd5e1 !important; background: #f8fafc !important; }
+      .macro-val { color: #000 !important; }
+      .meal-block { border: 1px solid #cbd5e1 !important; page-break-inside: avoid; margin-top: 10px !important; padding: 10px !important; background: transparent !important; }
+      .meal-block-header { color: #000 !important; border-bottom: 1px solid #000 !important; }
+      .recipe-card { border: 1px solid #e2e8f0 !important; background: transparent !important; page-break-inside: avoid; }
+      .recipe-card.dimmed { display: none !important; }
+      .recipe-card.selected { border: 1.5px solid #000 !important; background: #fafafa !important; }
+      .recipe-title { color: #000 !important; }
+      .recipe-ingredients { color: #333 !important; }
+      .recipe-ingredients strong { color: #000 !important; }
+      .disclaimer-banner { border: 1px solid #000 !important; color: #000 !important; background: #fff !important; display: block !important; }
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="card">
+  <!-- Check-In Form Card -->
+  <div class="card no-print" id="checkInCard">
     <h1>Weekly Check-In & Complete Meal Engine</h1>
-    <p class="subtitle">Complete your weekly audit to generate adjusted macros and complete meal recipes.</p>
+    <p class="subtitle">Complete your audit to calculate adjusted macros and formulated meal recipes.</p>
 
     <div class="section-title">1. Current Metric Audit</div>
-    <label>Current Phase Goal</label>
+    <label for="phase">Current Phase Goal</label>
     <select id="phase">
       <option value="fat_loss">Fat Loss / Calorie Deficit</option>
       <option value="maintenance">Maintenance / Primer Phase</option>
@@ -84,22 +114,22 @@
 
     <div class="grid-2">
       <div>
-        <label>Current Avg Wt (lbs)</label>
+        <label for="currWeight">Current Avg Wt (lbs)</label>
         <input type="number" step="0.1" id="currWeight" placeholder="e.g. 182.4">
       </div>
       <div>
-        <label>Previous Avg Wt (lbs)</label>
+        <label for="prevWeight">Previous Avg Wt (lbs)</label>
         <input type="number" step="0.1" id="prevWeight" placeholder="e.g. 183.8">
       </div>
     </div>
 
     <div class="grid-2">
       <div>
-        <label>Current Daily Cals</label>
+        <label for="currCals">Current Daily Cals</label>
         <input type="number" id="currCals" placeholder="e.g. 2200">
       </div>
       <div>
-        <label>Diet Adherence (Days/7)</label>
+        <label for="adherence">Diet Adherence (Days/7)</label>
         <input type="number" id="adherence" min="0" max="7" value="7">
       </div>
     </div>
@@ -122,26 +152,26 @@
     </div>
 
     <div class="slider-group">
-      <div class="slider-header"><span>🧠 Overall Diet Satiety / Hunger</span><span class="val" id="valDiet">4/5</span></div>
+      <div class="slider-header"><span>🧠 Overall Diet Satiety / Hunger (1 = Stuffed/Poor Appetite, 5 = Starving)</span><span class="val" id="valDiet">4/5</span></div>
       <input type="range" id="rateDiet" min="1" max="5" value="4" oninput="document.getElementById('valDiet').innerText = this.value + '/5'">
     </div>
 
     <div class="section-title">3. Structure & Meal Frequency</div>
-    <label>Daily Meal Frequency</label>
-    <select id="mealCount">
+    <label for="mealFrequency">Daily Meal Frequency</label>
+    <select id="mealFrequency">
       <option value="2">2 Meals / Day (Intermittent Fasting)</option>
       <option value="3">3 Meals / Day (Breakfast, Lunch, Dinner)</option>
       <option value="4" selected>4 Meals / Day (Breakfast, Lunch 1, Lunch 2, Dinner)</option>
       <option value="5">5 Meals / Day (Breakfast, 3 Midday Meals, Dinner)</option>
-      <option value="6">6 Meals / Day (Bodybuilding Frequency)</option>
+      <option value="6">6 Meals / Day (Bodybuilding Split)</option>
     </select>
 
-    <div class="section-title">4. Dietary Preferences & Exclusions</div>
-    <label>Dietary Restrictions / Disliked Foods</label>
-    <input type="text" id="dietRestrictions" placeholder="e.g. No fish, no eggs, hate sweet potatoes, no dairy">
+    <div class="section-title">4. Dietary Framework & Exclusions</div>
+    <label for="dietaryRestrictions">Dietary Restrictions, Diet Type, or Disliked Foods</label>
+    <input type="text" id="dietaryRestrictions" placeholder="e.g. Vegan, Carnivore, Paleo, Keto, No Sourdough, No Eggs, Dairy-Free">
 
-    <label style="margin-top: 10px;">Special Requests / Favorite Foods</label>
-    <input type="text" id="favFoods" placeholder="e.g. Ground beef, Sourdough bread, Sirloin steak, Jasmine rice">
+    <label for="favoriteFoods" style="margin-top: 10px;">Favorite Foods / Specific Requests</label>
+    <input type="text" id="favoriteFoods" placeholder="e.g. Extra Firm Tofu, Sirloin Steak, Sweet Potatoes, Jasmine Rice">
 
     <div class="section-title">5. Training Split Schedule</div>
     <div class="toggle-container">
@@ -150,7 +180,7 @@
     </div>
 
     <div id="cyclingInputs" style="display:none; margin-top:8px;">
-      <label>Training Days / Week</label>
+      <label for="trainingDaysCount">Training Days / Week</label>
       <select id="trainingDaysCount">
         <option value="3">3 Days Training / 4 Days Rest</option>
         <option value="4" selected>4 Days Training / 3 Days Rest</option>
@@ -165,10 +195,11 @@
   <!-- Results Section -->
   <div id="resultsContainer" style="display:none;">
     <div class="card" style="border-left: 4px solid var(--accent);">
-      <h2 style="font-size: 1.1rem; margin:0 0 4px;">Adjusted Targets & Coaching Rationale</h2>
-      <div class="rationale" id="resRationale"></div>
+      <h2 style="font-size: 1.1rem; margin:0 0 4px;">Adjusted Targets & Coaching Protocol</h2>
+      <div class="rationale no-print" id="resRationale"></div>
+      <div class="disclaimer-banner" id="dietDisclaimer"></div>
 
-      <div id="tabSelection" class="tab-bar" style="display:none;">
+      <div id="tabSelection" class="tab-bar no-print" style="display:none;">
         <button class="tab-btn active" id="tabTrain" onclick="switchDayView('train')">🏋️ Training Day Plan</button>
         <button class="tab-btn" id="tabRest" onclick="switchDayView('rest')">🧘 Rest Day Plan</button>
       </div>
@@ -191,28 +222,639 @@
 
     <div class="card">
       <h2 style="font-size: 1.1rem; margin:0 0 4px;" id="matrixTitle">Complete Formulated Meal Plans</h2>
-      <p style="font-size:0.75rem; color:var(--text-muted); margin:0 0 12px;">Choose <strong>1 Complete Meal Option</strong> per meal time. Measure all foods in raw/uncooked weights.</p>
+      <p class="no-print" style="font-size:0.75rem; color:var(--text-muted); margin:0 0 12px;">Select your preferred meal option for each time slot below. Measure all food in raw/uncooked weights.</p>
       
       <div id="mealMatrixContainer"></div>
 
-      <button class="btn-primary" style="background: var(--accent);" onclick="copyCompletePlan()">Copy Complete Protocol to Clipboard</button>
+      <button class="btn-primary no-print" style="background: var(--accent);" onclick="copyCompletePlan()">📋 Copy Complete Protocol to Clipboard</button>
+      <button class="btn-secondary no-print" onclick="window.print()">🖨️ Print / Save Selected Plan as PDF</button>
     </div>
   </div>
 </div>
 
 <script>
-  let state = {
-    phase: "fat_loss",
-    currentWeight: null,
-    mealCount: 4,
-    carbCycling: false,
-    trainingDays: 4,
-    dailyBaseline: null,
-    trainingDayTargets: null,
-    restDayTargets: null,
-    activeView: "baseline",
-    bioScores: { strength: 4, recovery: 4, digestion: 5, satiety: 4 }
-  };
+  function toOz(grams) {
+    return (grams / 28.35).toFixed(1);
+  }
+
+  // =========================================================================
+  // MASTER RECIPE DATABASE
+  // =========================================================================
+  const RECIPE_DATABASE = [
+    // --- BREAKFAST RECIPES ---
+    {
+      id: "b_egg_toast",
+      name: "Pasture Eggs & Sourdough Scramble + Fruit",
+      slot: "breakfast",
+      archetype: ["omnivore", "vegetarian"],
+      keywords: ["egg", "eggs", "toast", "sourdough", "bread"],
+      build: (p, c, f, opt) => {
+        const wholeEggs = f >= 10 ? 2 : 1;
+        const fatFromEggs = wholeEggs * 5;
+        const proFromEggs = wholeEggs * 6;
+        const addedFat = Math.max(0, f - fatFromEggs);
+        
+        let toastSlices = Math.min(4, Math.max(1, Math.round(c / 15)));
+        const carbsFromToast = toastSlices * 15;
+        const proFromToast = toastSlices * 3;
+        const eggWhites = Math.max(50, Math.round((p - proFromEggs - proFromToast) / 0.11));
+        const carbsRem = Math.max(0, c - carbsFromToast);
+
+        let items = [
+          `<strong>Whole Eggs:</strong> ${wholeEggs} large (${fatFromEggs}g inherent fat)`,
+          `<strong>Liquid Egg Whites (Raw):</strong> ${eggWhites}g (~${toOz(eggWhites)} oz)`,
+          `<strong>Sourdough Bread:</strong> ${toastSlices} slices toasted (${carbsFromToast}g carbs)`
+        ];
+
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            const juiceOz = Math.round(carbsRem / 3.5);
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${juiceOz} fl oz [${carbsRem}g carbs]`);
+          } else {
+            if (carbsRem >= 30) {
+              const honeyTbsp = Math.min(2, Math.round(carbsRem / 13 * 10) / 10);
+              items.push(`<strong>Fresh Fruit & Pure Maple Syrup:</strong> 120g Berries/Banana (~15g carbs) + ${honeyTbsp} tbsp Pure Maple Syrup / Raw Honey [${carbsRem}g carbs]`);
+            } else {
+              const berryG = Math.round(carbsRem / 0.12);
+              items.push(`<strong>Fresh Strawberries / Blueberries:</strong> ${berryG}g (~${toOz(berryG)} oz) [${carbsRem}g carbs]`);
+            }
+          }
+        }
+
+        items.push(addedFat > 2 ? `<strong>Grass-Fed Butter / Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp for cooking/toast` : `<strong>Added Fat:</strong> 0 tsp (Covered by egg yolks)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "b_power_oats",
+      name: "High-Protein Oatmeal Power Bowl",
+      slot: "breakfast",
+      archetype: ["omnivore", "vegetarian"],
+      keywords: ["oat", "oats", "oatmeal", "whey", "peanut butter"],
+      build: (p, c, f, opt) => {
+        let dryOatsGrams;
+        let fruitItem = "";
+        let fluidItem = "";
+
+        if (opt.enableLiquid) {
+          dryOatsGrams = Math.min(60, Math.max(40, Math.round((c * 0.6) / 0.68)));
+          const carbsFromOats = Math.round(dryOatsGrams * 0.68);
+          const carbsRem = Math.max(0, c - carbsFromOats);
+          if (carbsRem > 0) {
+            const juiceOz = Math.round(carbsRem / 3.5);
+            fluidItem = `<strong>100% Tart Cherry / Orange Juice:</strong> ${juiceOz} fl oz on the side [${carbsRem}g carbs]`;
+          }
+        } else {
+          const fruitCarbs = c >= 45 ? 15 : 0;
+          const mapleCarbs = c >= 75 ? 13 : 0;
+          if (fruitCarbs > 0) fruitItem = `<strong>Fresh Berries / Sliced Banana Topping:</strong> 120g (~${toOz(120)} oz) [15g carbs]`;
+          if (mapleCarbs > 0) fruitItem += ` + 1 tbsp Pure Maple Syrup [13g carbs]`;
+
+          const carbsForOats = Math.max(25, c - fruitCarbs - mapleCarbs);
+          dryOatsGrams = Math.round(carbsForOats / 0.68);
+        }
+
+        const carbsFromOats = Math.round(dryOatsGrams * 0.68);
+        const proFromOats = Math.round(dryOatsGrams * 0.13);
+        const fatFromOats = Math.round(dryOatsGrams * 0.06);
+
+        const addedFat = Math.max(0, f - fatFromOats);
+        const pbGrams = Math.round(addedFat / 0.50);
+        const proFromPB = Math.round(pbGrams * 0.25);
+        const wheyGrams = Math.max(15, Math.round((p - proFromOats - proFromPB) / 0.75));
+
+        let items = [
+          `<strong>Rolled Oats (Dry):</strong> ${dryOatsGrams}g (~${(dryOatsGrams / 40).toFixed(1)} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups) [${carbsFromOats}g carbs]`,
+          `<strong>Whey / Casein Isolate:</strong> ${wheyGrams}g (~${(wheyGrams / 25).toFixed(1)} scoops stirred in)`
+        ];
+
+        if (fruitItem) items.push(fruitItem);
+        if (fluidItem) items.push(fluidItem);
+
+        items.push(pbGrams > 0 ? `<strong>All-Natural Nut Butter:</strong> ${pbGrams}g (~${(pbGrams / 16).toFixed(1)} tbsp)` : `<strong>Added Fat:</strong> 0 tbsp (Covered by oats)`);
+        return items;
+      }
+    },
+    {
+      id: "b_greek_yogurt",
+      name: "Hybrid Greek Yogurt & Cream of Rice Parfait",
+      slot: "breakfast",
+      archetype: ["omnivore", "vegetarian"],
+      keywords: ["yogurt", "greek yogurt", "cream of rice", "cor", "dairy"],
+      build: (p, c, f, opt) => {
+        const baseGy = 340;
+        const wheyNeeded = Math.max(0, Math.round((p - 34) / 0.75));
+
+        let corGrams;
+        let fruitItem = "";
+        let fluidItem = "";
+
+        if (opt.enableLiquid || c >= 90) {
+          corGrams = Math.min(80, Math.max(40, Math.round((c * 0.7) / 0.80)));
+          const carbsFromCor = Math.round(corGrams * 0.80);
+          const carbsRem = Math.max(0, c - carbsFromCor - 15);
+          fruitItem = `<strong>Fresh Mixed Berry Topping:</strong> 120g (~${toOz(120)} oz) [15g carbs]`;
+          if (carbsRem > 0) {
+            const juiceOz = Math.round(carbsRem / 3.5);
+            fluidItem = `<strong>100% Tart Cherry / Pomegranate Juice:</strong> ${juiceOz} fl oz [${carbsRem}g carbs]`;
+          }
+        } else {
+          const fruitCarbs = c >= 35 ? 15 : 0;
+          const mapleCarbs = c >= 65 ? 13 : 0;
+          if (fruitCarbs > 0) fruitItem = `<strong>Fresh Mixed Berry Topping:</strong> 120g (~${toOz(120)} oz) [15g carbs]`;
+          if (mapleCarbs > 0) fruitItem += ` + 1.0 tbsp Pure Maple Syrup [13g carbs]`;
+
+          const carbsForCor = Math.max(20, c - fruitCarbs - mapleCarbs);
+          corGrams = Math.round(carbsForCor / 0.80);
+        }
+
+        const carbsFromCor = Math.round(corGrams * 0.80);
+
+        let items = [
+          `<strong>0% Plain Greek Yogurt:</strong> ${baseGy}g (~12 oz) [34g Protein base]`,
+          wheyNeeded > 5 ? `<strong>Whey Isolate:</strong> ${wheyNeeded}g (~${(wheyNeeded / 25).toFixed(1)} scoops stirred in)` : `<strong>Protein Note:</strong> Fully met by Greek yogurt base`,
+          `<strong>Cream of Rice (Dry Measure):</strong> ${corGrams}g (~${toOz(corGrams)} oz) [${carbsFromCor}g carbs]`
+        ];
+
+        if (fruitItem) items.push(fruitItem);
+        if (fluidItem) items.push(fluidItem);
+
+        items.push(`<strong>Raw Almonds / Chia Seeds:</strong> ${Math.round(f / 0.50)}g (~${toOz(Math.round(f / 0.50))} oz)`);
+        return items;
+      }
+    },
+    {
+      id: "b_vegan_tofu",
+      name: "Hybrid Tofu Scramble & Sourdough Toast",
+      slot: "breakfast",
+      archetype: ["vegan", "vegetarian"],
+      keywords: ["tofu", "toast", "sourdough", "bread", "vegan", "plant-based"],
+      build: (p, c, f, opt) => {
+        const tofuGrams = 225;
+        const proFromTofu = 20;
+        const fatFromTofu = 10;
+        const proRem = Math.max(0, p - proFromTofu);
+        const plantPowderG = Math.round(proRem / 0.75);
+
+        let toastSlices = Math.min(4, Math.max(1, Math.round(c / 15)));
+        const carbsFromToast = toastSlices * 15;
+        const carbsRem = Math.max(0, c - carbsFromToast);
+        const addedFat = Math.max(0, f - fatFromTofu);
+        const avoGrams = Math.round(addedFat / 0.15);
+
+        let items = [
+          `<strong>Extra Firm Organic Tofu (Pressed):</strong> ${tofuGrams}g (~8 oz) [${proFromTofu}g Protein, ${fatFromTofu}g fat base]`,
+          plantPowderG > 5 ? `<strong>Pea / Rice Protein Isolate (Side Shake):</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops) [Provides remaining ${proRem}g Protein]` : '',
+          `<strong>Sourdough Bread:</strong> ${toastSlices} slices toasted (${carbsFromToast}g carbs)`
+        ].filter(Boolean);
+
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            const juiceOz = Math.round(carbsRem / 3.5);
+            items.push(`<strong>100% Pure Fruit Juice (Low Appetite Mode):</strong> ${juiceOz} fl oz [${carbsRem}g carbs]`);
+          } else {
+            const fruitG = Math.round(carbsRem / 0.12);
+            items.push(`<strong>Fresh Fruit / Berries:</strong> ${fruitG}g [${carbsRem}g carbs]`);
+          }
+        }
+
+        items.push(addedFat > 2 ? `<strong>Fresh Hass Avocado / Olive Oil:</strong> ${avoGrams}g avocado (~${(addedFat / 4.5).toFixed(1)} tsp oil)` : `<strong>Added Fat:</strong> 0 tsp (Covered by tofu lipids)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "b_vegan_oats",
+      name: "Plant Protein Oatmeal Power Bowl",
+      slot: "breakfast",
+      archetype: ["vegan", "vegetarian"],
+      keywords: ["oat", "oats", "oatmeal", "plant protein", "vegan"],
+      build: (p, c, f, opt) => {
+        let dryOatsGrams = Math.min(80, Math.round((c > 60 ? c - 20 : c * 0.85) / 0.68));
+        const carbsFromOats = Math.round(dryOatsGrams * 0.68);
+        const proFromOats = Math.round(dryOatsGrams * 0.13);
+        const fatFromOats = Math.round(dryOatsGrams * 0.06);
+
+        const carbsRem = Math.max(0, c - carbsFromOats);
+        const addedFat = Math.max(0, f - fatFromOats);
+        const pbGrams = Math.round(addedFat / 0.50);
+        const proFromPB = Math.round(pbGrams * 0.25);
+        const plantPowderG = Math.max(15, Math.round((p - proFromOats - proFromPB) / 0.75));
+
+        let items = [
+          `<strong>Rolled Oats (Dry):</strong> ${dryOatsGrams}g (~${(dryOatsGrams / 40).toFixed(1)} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups) [${carbsFromOats}g carbs]`,
+          `<strong>Pea / Rice Protein Isolate:</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops)`
+        ];
+
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Pure Maple Syrup:</strong> ${(carbsRem / 13).toFixed(1)} tbsp stirred in [${carbsRem}g carbs]`);
+          } else {
+            const fruitG = Math.round(carbsRem / 0.12);
+            items.push(`<strong>Fresh Berries / Sliced Banana:</strong> ${fruitG}g topping [${carbsRem}g carbs]`);
+          }
+        }
+
+        items.push(pbGrams > 0 ? `<strong>All-Natural Nut Butter:</strong> ${pbGrams}g (~${(pbGrams / 16).toFixed(1)} tbsp)` : `<strong>Added Fat:</strong> 0 tbsp (Covered by oats)`);
+        return items;
+      }
+    },
+    {
+      id: "b_vegan_parfait",
+      name: "Soy Yogurt & Cream of Rice Parfait",
+      slot: "breakfast",
+      archetype: ["vegan", "vegetarian"],
+      keywords: ["soy yogurt", "cream of rice", "cor", "vegan"],
+      build: (p, c, f, opt) => {
+        const soyYogurtG = 250;
+        const plantPowderG = Math.max(15, Math.round((p - 15) / 0.75));
+        const corGrams = Math.min(80, Math.round((c > 60 ? c - 20 : c * 0.85) / 0.80));
+        const carbsFromCor = Math.round(corGrams * 0.80);
+        const carbsRem = Math.max(0, c - carbsFromCor);
+
+        let items = [
+          `<strong>Plain Unsweetened Soy Yogurt:</strong> ${soyYogurtG}g (~9 oz)`,
+          `<strong>Plant Protein Isolate (Stirred In):</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops)`,
+          `<strong>Cream of Rice (Dry):</strong> ${corGrams}g (~${toOz(corGrams)} oz) [${carbsFromCor}g carbs]`,
+          `<strong>Chia Seeds / Raw Walnuts:</strong> ${Math.round(f / 0.50)}g`
+        ];
+
+        if (carbsRem > 0) {
+          const mapleTbsp = (carbsRem / 13).toFixed(1);
+          items.push(`<strong>100% Pure Maple Syrup & Fruit:</strong> ${mapleTbsp} tbsp Pure Maple Syrup [${carbsRem}g carbs]`);
+        }
+        return items;
+      }
+    },
+    {
+      id: "b_carnivore_scramble",
+      name: "Whole Eggs & Ground Beef Scramble",
+      slot: "breakfast",
+      archetype: ["carnivore"],
+      keywords: ["beef", "egg", "eggs"],
+      build: (p, c, f) => {
+        const wholeEggs = 3;
+        const beefGrams = Math.round(Math.max(0, p - 18) / 0.21);
+        const fatFromBeef = Math.round(beefGrams * 0.15);
+        const addedButter = Math.max(0, f - 15 - fatFromBeef);
+        return [
+          `<strong>Whole Pasture-Raised Eggs:</strong> 3 large (18g P, 15g F)`,
+          `<strong>85/15 Ground Beef (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [${fatFromBeef}g inherent fat]`,
+          addedButter > 2 ? `<strong>Grass-Fed Butter / Tallow:</strong> ${(addedButter / 4.5).toFixed(1)} tsp` : `<strong>Cooking Fat:</strong> 0 tsp (Covered by beef & eggs)`,
+          `<strong>Electrolytes:</strong> 1/2 tsp Redmond Real Salt / Sea Salt`
+        ];
+      }
+    },
+
+    // --- LUNCH / MIDDAY RECIPES ---
+    {
+      id: "l_chicken_rice",
+      name: "Chicken Breast & Jasmine Rice Bowl",
+      slot: "lunch",
+      archetype: ["omnivore"],
+      keywords: ["chicken", "rice", "jasmine rice"],
+      build: (p, c, f, opt) => {
+        const riceGrams = Math.min(130, Math.round(c / 0.80));
+        const carbsFromRice = Math.round(riceGrams * 0.80);
+        const carbsRem = Math.max(0, c - carbsFromRice);
+        const proFromRice = Math.round(riceGrams * 0.07);
+        const chickenGrams = Math.max(60, Math.round((p - proFromRice) / 0.23));
+        const inherentFat = Math.round(chickenGrams * 0.025);
+        const addedFat = Math.max(0, f - inherentFat);
+
+        let items = [
+          `<strong>Chicken Breast (Raw):</strong> ${chickenGrams}g (~${toOz(chickenGrams)} oz)`,
+          `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs]`
+        ];
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Jasmine Rice (Cap Overflow):</strong> +${Math.round(carbsRem / 0.80)}g dry [${carbsRem}g carbs - starch cap exceeded, add more rice or a second carb side]`);
+          }
+        }
+        items.push(`<strong>Extra Virgin Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp drizzle [Deducted ${inherentFat}g chicken fat]`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "l_turkey_potato",
+      name: "93/7 Ground Turkey & Diced Potato Hash",
+      slot: "lunch",
+      archetype: ["omnivore", "paleo"],
+      keywords: ["turkey", "potato", "potatoes"],
+      build: (p, c, f, opt) => {
+        const potatoGrams = Math.min(450, Math.round(c / 0.17));
+        const carbsFromPot = Math.round(potatoGrams * 0.17);
+        const carbsRem = Math.max(0, c - carbsFromPot);
+        const proFromPot = Math.round(potatoGrams * 0.02);
+        const turkeyGrams = Math.max(60, Math.round((p - proFromPot) / 0.20));
+        const inherentFat = Math.round(turkeyGrams * 0.07);
+        const addedFat = Math.max(0, f - inherentFat);
+
+        let items = [
+          `<strong>93/7 Lean Ground Turkey (Raw):</strong> ${turkeyGrams}g (~${toOz(turkeyGrams)} oz) [${inherentFat}g inherent fat]`,
+          `<strong>Red / Russet Potatoes (Raw Diced):</strong> ${potatoGrams}g (~${toOz(potatoGrams)} oz) [${carbsFromPot}g carbs]`
+        ];
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Potatoes (Cap Overflow):</strong> +${Math.round(carbsRem / 0.17)}g raw [${carbsRem}g carbs - starch cap exceeded, add more potato or a second carb side]`);
+          }
+        }
+        items.push(addedFat > 2 ? `<strong>Fresh Avocado / Olive Oil:</strong> ${Math.round(addedFat / 0.15)}g avocado` : `<strong>Added Fat:</strong> 0 tsp (Covered by turkey)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "l_fish_noodles",
+      name: "White Fish & Rice Noodles",
+      slot: "lunch",
+      archetype: ["omnivore"],
+      keywords: ["fish", "cod", "tilapia", "pasta", "noodles"],
+      build: (p, c, f, opt) => {
+        const pastaGrams = Math.min(130, Math.round(c / 0.75));
+        const carbsFromPasta = Math.round(pastaGrams * 0.75);
+        const carbsRem = Math.max(0, c - carbsFromPasta);
+        const proFromPasta = Math.round(pastaGrams * 0.08);
+        const fishGrams = Math.max(60, Math.round((p - proFromPasta) / 0.18));
+        const addedFat = Math.max(0, f - Math.round(fishGrams * 0.02));
+
+        let items = [
+          `<strong>Cod / Tilapia / White Fish (Raw):</strong> ${fishGrams}g (~${toOz(fishGrams)} oz)`,
+          `<strong>Brown Rice Noodles / Gluten-Free Pasta:</strong> ${pastaGrams}g (~${toOz(pastaGrams)} oz dry) [${carbsFromPasta}g carbs]`
+        ];
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Rice Noodles (Cap Overflow):</strong> +${Math.round(carbsRem / 0.75)}g dry [${carbsRem}g carbs - starch cap exceeded, add more pasta or a second carb side]`);
+          }
+        }
+        items.push(`<strong>Extra Virgin Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "l_vegan_tempeh",
+      name: "Hybrid Tempeh & Jasmine Rice Bowl",
+      slot: "lunch",
+      archetype: ["vegan", "vegetarian"],
+      keywords: ["tempeh", "rice", "jasmine rice", "vegan"],
+      build: (p, c, f, opt) => {
+        const tempehGrams = 150;
+        const proFromTempeh = 28;
+        const fatFromTempeh = 16;
+        const proRem = Math.max(0, p - proFromTempeh);
+        const plantPowderG = Math.round(proRem / 0.75);
+
+        const riceGrams = Math.min(130, Math.round(c / 0.80));
+        const carbsFromRice = Math.round(riceGrams * 0.80);
+        const carbsRem = Math.max(0, c - carbsFromRice);
+        const addedFat = Math.max(0, f - fatFromTempeh);
+
+        let items = [
+          `<strong>Organic Soy Tempeh (Pan-Seared):</strong> ${tempehGrams}g (~5.3 oz) [${proFromTempeh}g Protein, ${fatFromTempeh}g fat base]`,
+          plantPowderG > 5 ? `<strong>Pea / Rice Protein Booster (In Sauce / Shake):</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops) [${proRem}g Protein]` : '',
+          `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs]`
+        ].filter(Boolean);
+
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Jasmine Rice (Cap Overflow):</strong> +${Math.round(carbsRem / 0.80)}g dry [${carbsRem}g carbs - starch cap exceeded, add more rice or a second carb side]`);
+          }
+        }
+        items.push(addedFat > 2 ? `<strong>Sesame / Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp` : `<strong>Added Oil:</strong> 0 tsp (Covered by tempeh)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "l_vegan_seitan",
+      name: "High-Protein Seitan & Potato Hash",
+      slot: "lunch",
+      archetype: ["vegan", "vegetarian"],
+      keywords: ["seitan", "potato", "potatoes", "vegan"],
+      build: (p, c, f, opt) => {
+        const seitanGrams = Math.round(p / 0.25);
+        const potGrams = Math.min(450, Math.round(c / 0.17));
+        const carbsFromPot = Math.round(potGrams * 0.17);
+        const carbsRem = Math.max(0, c - carbsFromPot);
+        const avoGrams = Math.round(f / 0.15);
+
+        let items = [
+          `<strong>Vital Wheat Gluten / Prepared Seitan:</strong> ${seitanGrams}g (~${toOz(seitanGrams)} oz) [${p}g High Protein Base, <3g fat]`,
+          `<strong>Red / Russet Potatoes (Diced):</strong> ${potGrams}g (~${toOz(potGrams)} oz) [${carbsFromPot}g carbs]`
+        ];
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Potatoes (Cap Overflow):</strong> +${Math.round(carbsRem / 0.17)}g raw [${carbsRem}g carbs - starch cap exceeded, add more potato or a second carb side]`);
+          }
+        }
+        items.push(`<strong>Fresh Hass Avocado:</strong> ${avoGrams}g (~${toOz(avoGrams)} oz)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "l_carnivore_burgers",
+      name: "80/20 Ground Beef Burger Patties",
+      slot: "lunch",
+      archetype: ["carnivore"],
+      keywords: ["beef", "ground beef"],
+      build: (p, c, f) => {
+        const beefGrams = Math.round(p / 0.20);
+        return [
+          `<strong>80/20 Ground Chuck Beef Patties (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz)`,
+          `<strong>Inherent Fat Content:</strong> ${Math.round(beefGrams * 0.20)}g natural bovine fat (No added oils needed)`,
+          `<strong>Seasoning:</strong> Coarse sea salt only`
+        ];
+      }
+    },
+
+    // --- DINNER RECIPES (SINGLE STARCH BASE - NO DOUBLE STACKING) ---
+    {
+      id: "d_sirloin_sweet_potato",
+      name: "Top Sirloin Steak & Sweet Potato (Sweet Potato Base)",
+      slot: "dinner",
+      archetype: ["omnivore", "paleo"],
+      keywords: ["steak", "sirloin", "sweet potato"],
+      build: (p, c, f, opt) => {
+        // Single cohesive starch base: Sweet potato only (up to 550g raw)
+        const sweetPotGrams = Math.min(550, Math.max(100, Math.round(c / 0.20)));
+        const carbsFromSP = Math.round(sweetPotGrams * 0.20);
+        const carbsRem = Math.max(0, c - carbsFromSP);
+        const steakGrams = Math.round(p / 0.22);
+        const inherentFat = Math.round(steakGrams * 0.055);
+        const addedFat = Math.max(0, f - inherentFat);
+
+        let items = [
+          `<strong>Top Sirloin Steak (Raw):</strong> ${steakGrams}g (~${toOz(steakGrams)} oz) [${inherentFat}g inherent fat]`,
+          `<strong>Sweet Potato / Yams (Raw):</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz) [${carbsFromSP}g carbs - Single Starch Base]`
+        ];
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Sweet Potato (Cap Overflow):</strong> +${Math.round(carbsRem / 0.20)}g raw [${carbsRem}g carbs - starch cap exceeded, add more sweet potato or a second carb side]`);
+          }
+        }
+        items.push(addedFat > 2 ? `<strong>Grass-Fed Butter:</strong> ${(addedFat / 4.5).toFixed(1)} tsp` : `<strong>Added Fat:</strong> 0 tsp (Covered by steak)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "d_salmon_mash",
+      name: "Atlantic Salmon & Yukon Gold Mash (Potato Base)",
+      slot: "dinner",
+      archetype: ["omnivore", "paleo"],
+      keywords: ["salmon", "fish", "potato", "potatoes"],
+      build: (p, c, f, opt) => {
+        const salmonGrams = Math.min(190, Math.round(p / 0.20));
+        const proFromSalmon = Math.round(salmonGrams * 0.20);
+        const inherentFat = Math.round(salmonGrams * 0.13);
+        const proRem = Math.max(0, p - proFromSalmon);
+        const shrimpGrams = Math.round(proRem / 0.23);
+
+        // Single cohesive starch base: Yukon Gold potatoes only (up to 550g raw)
+        const potGrams = Math.min(550, Math.max(100, Math.round(c / 0.17)));
+        const carbsFromPot = Math.round(potGrams * 0.17);
+        const carbsRem = Math.max(0, c - carbsFromPot);
+
+        let items = [
+          `<strong>Atlantic Salmon Fillet (Raw):</strong> ${salmonGrams}g (~${toOz(salmonGrams)} oz) [Capped: ${proFromSalmon}g P, ${inherentFat}g Omega-3 Fat]`
+        ];
+        if (proRem > 5) items.push(`<strong>Lean Protein Booster:</strong> ${shrimpGrams}g (~${toOz(shrimpGrams)} oz) Raw Shrimp or Cod (Provides remaining ${proRem}g Protein with 0g fat)`);
+        items.push(`<strong>Yukon Gold Potatoes (Raw):</strong> ${potGrams}g (~${toOz(potGrams)} oz) [${carbsFromPot}g carbs - Single Starch Base]`);
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Potatoes (Cap Overflow):</strong> +${Math.round(carbsRem / 0.17)}g raw [${carbsRem}g carbs - starch cap exceeded, add more potato or a second carb side]`);
+          }
+        }
+        items.push(`<strong>Added Cooking Fat:</strong> 0 tsp (Salmon covers meal fat allotment)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "d_beef_rice",
+      name: "93/7 Lean Ground Beef & Jasmine Rice Bowl (Rice Bowl Base)",
+      slot: "dinner",
+      archetype: ["omnivore"],
+      keywords: ["ground beef", "beef", "rice", "jasmine rice"],
+      build: (p, c, f, opt) => {
+        // Single cohesive starch base: Jasmine White Rice dry raw only (up to 150g dry)
+        const riceGrams = Math.min(150, Math.max(30, Math.round(c / 0.80)));
+        const carbsFromRice = Math.round(riceGrams * 0.80);
+        const carbsRem = Math.max(0, c - carbsFromRice);
+        const proFromRice = Math.round(riceGrams * 0.07);
+        const beefGrams = Math.max(60, Math.round((p - proFromRice) / 0.21));
+        const inherentFat = Math.round(beefGrams * 0.075);
+        const addedFat = Math.max(0, f - inherentFat);
+
+        let items = [
+          `<strong>93/7 Lean Ground Beef (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [${inherentFat}g inherent fat]`,
+          `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs - Single Starch Base]`
+        ];
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Jasmine Rice (Cap Overflow):</strong> +${Math.round(carbsRem / 0.80)}g dry [${carbsRem}g carbs - starch cap exceeded, add more rice or a second carb side]`);
+          }
+        }
+        items.push(addedFat > 2 ? `<strong>Fresh Avocado:</strong> ${Math.round(addedFat / 0.15)}g avocado` : `<strong>Added Fat:</strong> 0 tsp (Covered by beef)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "d_vegan_tofu_sweet_potato",
+      name: "Grilled Organic Tofu & Roasted Sweet Potatoes",
+      slot: "dinner",
+      archetype: ["vegan", "vegetarian"],
+      keywords: ["tofu", "sweet potato", "vegan"],
+      build: (p, c, f, opt) => {
+        const tofuGrams = 225;
+        const proFromTofu = 20;
+        const fatFromTofu = 10;
+        const proRem = Math.max(0, p - proFromTofu);
+        const edamameGrams = Math.round(proRem / 0.12);
+
+        const sweetPotGrams = Math.min(550, Math.max(100, Math.round(c / 0.20)));
+        const carbsFromSP = Math.round(sweetPotGrams * 0.20);
+        const carbsRem = Math.max(0, c - carbsFromSP);
+        const addedOil = Math.max(0, f - fatFromTofu);
+
+        let items = [
+          `<strong>Extra Firm Organic Tofu (Baked/Grilled):</strong> ${tofuGrams}g (~8 oz) [${proFromTofu}g Protein, ${fatFromTofu}g fat base]`,
+          edamameGrams > 10 ? `<strong>Steamed Shelled Edamame (Side):</strong> ${edamameGrams}g (~${toOz(edamameGrams)} oz) [Provides remaining ${proRem}g Protein]` : '',
+          `<strong>Sweet Potato / Yams (Raw):</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz) [${carbsFromSP}g carbs - Single Starch Base]`
+        ].filter(Boolean);
+
+        if (carbsRem > 0) {
+          if (opt.enableLiquid) {
+            items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
+          } else {
+            items.push(`<strong>Extra Sweet Potato (Cap Overflow):</strong> +${Math.round(carbsRem / 0.20)}g raw [${carbsRem}g carbs - starch cap exceeded, add more sweet potato or a second carb side]`);
+          }
+        }
+        items.push(addedOil > 2 ? `<strong>Extra Virgin Olive Oil:</strong> ${(addedOil / 4.5).toFixed(1)} tsp` : `<strong>Added Oil:</strong> 0 tsp (Covered by tofu)`);
+        items.push(opt.produce);
+        return items;
+      }
+    },
+    {
+      id: "d_carnivore_roast",
+      name: "Beef Chuck Roast / Short Ribs (Slow Cooked)",
+      slot: "dinner",
+      archetype: ["carnivore"],
+      keywords: ["beef", "roast", "ribs"],
+      build: (p, c, f) => {
+        const beefGrams = Math.round(p / 0.21);
+        return [
+          `<strong>Beef Chuck Roast / Boneless Short Ribs (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz)`,
+          `<strong>Inherent Fat Content:</strong> ${Math.round(beefGrams * 0.18)}g natural braised fat`,
+          `<strong>Salt & Mineral Water:</strong> Season generously with coarse sea salt`
+        ];
+      }
+    }
+  ];
+
+  const FUNCTIONAL_CATEGORIES = [
+    {
+      group: "Dark Polyphenol & Nitric Oxide Category",
+      liquidOptions: "Pomegranate juice, Beetroot juice, Tart cherry juice, or Concord grape juice",
+      produceOptions: "Baby spinach, Swiss chard, Arugula, or Steamed kale"
+    },
+    {
+      group: "Citrus, Vitamin C & Enzyme Category",
+      liquidOptions: "100% Orange juice, Grapefruit juice, Fresh pineapple juice, or Cold-pressed lemonade",
+      produceOptions: "Red/yellow bell peppers, Steamed broccoli, Cauliflower, or Brussels sprouts"
+    },
+    {
+      group: "Electrolyte, Potassium & Hydration Category",
+      liquidOptions: "100% Pure coconut water, Simmered bone broth, Sports electrolyte beverage, or Apple cider",
+      produceOptions: "Grilled asparagus, Sautéed zucchini, Yellow squash, Celery, or Sliced cucumbers"
+    },
+    {
+      group: "Anthocyanin & Recovery Category",
+      liquidOptions: "100% Tart cherry juice, Cranberry juice (100% pure), or Antioxidant tea blend with maple syrup",
+      produceOptions: "Steamed green beans, Sautéed zucchini, Mixed dark greens, or Roasted asparagus"
+    }
+  ];
 
   const TREAT_DATABASE = [
     { key: "cheesecake", name: "Cheesecake (1 Standard Slice)", cals: 450, p: 8, c: 45, f: 28 },
@@ -223,149 +865,229 @@
     { key: "cookie", name: "Large Bakery Cookie", cals: 350, p: 4, c: 48, f: 16 }
   ];
 
-  window.onload = function() {
-    const saved = localStorage.getItem('trainer_macro_cache');
-    if (saved) {
-      try {
-        const d = JSON.parse(saved);
-        if (d.currentWeight) document.getElementById('prevWeight').value = d.currentWeight;
-        if (d.dailyBaseline?.calories) document.getElementById('currCals').value = d.dailyBaseline.calories;
-        if (d.phase) document.getElementById('phase').value = d.phase;
-        if (d.mealCount) document.getElementById('mealCount').value = d.mealCount;
-      } catch(e) {}
-    }
+  let state = {
+    phase: "fat_loss",
+    currentWeight: null,
+    mealCount: 4,
+    carbCycling: false,
+    trainingDays: 4,
+    dailyBaseline: null,
+    trainingDayTargets: null,
+    restDayTargets: null,
+    activeView: "baseline",
+    bioScores: { strength: 4, recovery: 4, digestion: 5, satiety: 4 },
+    dietArchetype: "omnivore",
+    selectedOptions: {}
   };
 
-  function toOz(grams) {
-    return (grams / 28.35).toFixed(1);
+  window.onload = function() {
+    try {
+      const saved = localStorage.getItem('trainer_macro_cache');
+      if (saved) {
+        const d = JSON.parse(saved);
+        if (d.currentWeight && document.getElementById('prevWeight')) document.getElementById('prevWeight').value = d.currentWeight;
+        if (d.dailyBaseline?.calories && document.getElementById('currCals')) document.getElementById('currCals').value = d.dailyBaseline.calories;
+        if (d.phase && document.getElementById('phase')) document.getElementById('phase').value = d.phase;
+        if (d.mealCount && document.getElementById('mealFrequency')) document.getElementById('mealFrequency').value = d.mealCount;
+      }
+    } catch (e) {}
+  };
+
+  function detectDietArchetype(text) {
+    const t = (text || "").toLowerCase();
+    if (t.includes("carnivore") || t.includes("zero carb") || t.includes("animal based") || t.includes("meat only")) return "carnivore";
+    if (t.includes("vegan") || t.includes("plant-based") || t.includes("plant based")) return "vegan";
+    if (t.includes("vegetarian")) return "vegetarian";
+    if (t.includes("paleo") || t.includes("primal")) return "paleo";
+    if (t.includes("keto") || t.includes("ketogenic")) return "keto";
+    return "omnivore";
   }
 
   function runCheckInEngine() {
-    const phase = document.getElementById('phase').value;
-    const currW = parseFloat(document.getElementById('currWeight').value);
-    const prevW = parseFloat(document.getElementById('prevWeight').value);
-    const currC = parseInt(document.getElementById('currCals').value, 10);
-    const adhr = parseInt(document.getElementById('adherence').value, 10);
-    const numMeals = parseInt(document.getElementById('mealCount').value, 10);
-    
-    const rStrength = parseInt(document.getElementById('rateStrength').value, 10);
-    const rRecovery = parseInt(document.getElementById('rateRecovery').value, 10);
-    const rDigestion = parseInt(document.getElementById('rateDigestion').value, 10);
-    const rDiet = parseInt(document.getElementById('rateDiet').value, 10);
-
-    const isCycling = document.getElementById('carbCyclingToggle').checked;
-    const trainDays = parseInt(document.getElementById('trainingDaysCount').value, 10);
-    const restDays = 7 - trainDays;
-
-    if (!currW || !prevW || !currC) {
-      alert("Please enter current weight, previous weight, and current calories.");
-      return;
-    }
-
-    let newAvgCals = currC;
-    let rationale = "";
-    const pctChange = ((currW - prevW) / prevW) * 100;
-
-    if (adhr < 5) {
-      rationale = `Diet adherence was ${adhr}/7 days. Macros held steady to establish consistency before metabolic adjustments.`;
-    } else {
-      if (phase === "fat_loss") {
-        if (pctChange > -0.3) {
-          if (rRecovery <= 2 || rStrength <= 2) {
-            newAvgCals = Math.round(currC * 0.96);
-            rationale = `Weight loss stalled (${pctChange.toFixed(2)}%), but strength/recovery is depressed. Applied a conservative 4% drop to preserve training output.`;
-          } else {
-            newAvgCals = Math.round(currC * 0.92);
-            rationale = `Weight loss stalled (${pctChange.toFixed(2)}% change). Scaled calories down 8% (~${currC - newAvgCals} kcal) to restart fat loss.`;
-          }
-        } else if (pctChange < -1.5) {
-          newAvgCals = Math.round(currC * 1.05);
-          rationale = `Weight loss rate was too rapid (${Math.abs(pctChange).toFixed(2)}% drop). Increased calories 5% to protect lean tissue.`;
-        } else {
-          rationale = `Fat loss rate is on track (${Math.abs(pctChange).toFixed(2)}% drop). Calorie targets held steady.`;
-        }
-      } else if (phase === "hypertrophy") {
-        if (pctChange < 0.1) {
-          newAvgCals = currC + 125;
-          rationale = `Scale weight stalled in surplus (${pctChange.toFixed(2)}% change). Added 125 kcal daily.`;
-        } else if (pctChange > 0.6) {
-          newAvgCals = currC - 75;
-          rationale = `Surplus progressing faster than optimal lean tissue gain (${pctChange.toFixed(2)}% gain). Trimmed 75 kcal to minimize fat gain.`;
-        } else {
-          rationale = `Hypertrophy surplus rate is right on track (${pctChange.toFixed(2)}% gain). Targets held steady.`;
-        }
-      } else {
-        newAvgCals = currC + (pctChange < -0.5 ? 100 : (pctChange > 0.5 ? -100 : 0));
-        rationale = `Maintenance phase targets held to stabilize body mass.`;
-      }
-    }
-
-    if (rDigestion <= 2) {
-      rationale += ` Note: Digestion score was low (${rDigestion}/5)—the meal engine has automatically converted hard/dense starches into faster-digesting functional carbs and juices to reduce gut load.`;
-    }
-
-    const pro = Math.round(currW * 1.0);
-    const baseFat = Math.max(45, Math.round((newAvgCals * 0.25) / 9));
-    const baseCarb = Math.max(50, Math.round((newAvgCals - (pro * 4) - (baseFat * 9)) / 4));
-    const resolvedBaseCals = (pro * 4) + (baseCarb * 4) + (baseFat * 9);
-    const weeklyBudget = resolvedBaseCals * 7;
-
-    state = {
-      phase,
-      currentWeight: currW,
-      mealCount: numMeals,
-      carbCycling: isCycling,
-      trainingDays: trainDays,
-      dailyBaseline: { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat },
-      trainingDayTargets: null,
-      restDayTargets: null,
-      activeView: isCycling ? "train" : "baseline",
-      bioScores: { strength: rStrength, recovery: rRecovery, digestion: rDigestion, satiety: rDiet }
-    };
-
-    localStorage.setItem('trainer_macro_cache', JSON.stringify(state));
-
-    if (isCycling) {
-      const rawTrainCals = Math.round(resolvedBaseCals * 1.10);
-      const rawRestCals = Math.round((weeklyBudget - (trainDays * rawTrainCals)) / restDays);
-
-      const trainFat = Math.max(40, Math.round((rawTrainCals * 0.20) / 9));
-      const trainCarb = Math.max(60, Math.round((rawTrainCals - (pro * 4) - (trainFat * 9)) / 4));
-      const trainCals = (pro * 4) + (trainCarb * 4) + (trainFat * 9);
-
-      const restFat = Math.max(45, Math.round((rawRestCals * 0.30) / 9));
-      const restCarb = Math.max(30, Math.round((rawRestCals - (pro * 4) - (restFat * 9)) / 4));
-      const restCals = (pro * 4) + (restCarb * 4) + (restFat * 9);
-
-      state.trainingDayTargets = { calories: trainCals, protein: pro, carbs: trainCarb, fats: trainFat };
-      state.restDayTargets = { calories: restCals, protein: pro, carbs: restCarb, fats: restFat };
+    try {
+      const phase = document.getElementById('phase')?.value || 'fat_loss';
+      const currW = parseFloat(document.getElementById('currWeight')?.value) || 0;
+      const prevW = parseFloat(document.getElementById('prevWeight')?.value) || currW;
+      const currC = parseInt(document.getElementById('currCals')?.value, 10) || 0;
+      const adhr = parseInt(document.getElementById('adherence')?.value, 10) || 7;
+      const numMeals = parseInt(document.getElementById('mealFrequency')?.value, 10) || 4;
       
-      document.getElementById('tabSelection').style.display = 'flex';
-      switchDayView('train');
-    } else {
-      document.getElementById('tabSelection').style.display = 'none';
-      renderMealPlan(state.dailyBaseline);
+      const rStrength = parseInt(document.getElementById('rateStrength')?.value, 10) || 4;
+      const rRecovery = parseInt(document.getElementById('rateRecovery')?.value, 10) || 4;
+      const rDigestion = parseInt(document.getElementById('rateDigestion')?.value, 10) || 5;
+      const rDiet = parseInt(document.getElementById('rateDiet')?.value, 10) || 4;
+
+      const isCycling = document.getElementById('carbCyclingToggle')?.checked || false;
+      const trainDays = parseInt(document.getElementById('trainingDaysCount')?.value, 10) || 4;
+      const restDays = 7 - trainDays;
+      const restrictionsInput = document.getElementById('dietaryRestrictions')?.value || '';
+      const archetype = detectDietArchetype(restrictionsInput);
+
+      if (!currW || !currC) {
+        alert("Please enter both your current weight and current daily calories.");
+        return;
+      }
+
+      let newAvgCals = currC;
+      let rationale = "";
+      const deltaW = currW - prevW; // positive = weight gain, negative = weight loss
+      const absDeltaW = Math.abs(deltaW);
+      const pctChange = prevW > 0 ? (deltaW / prevW) * 100 : 0;
+
+      if (adhr < 5) {
+        rationale = `Diet adherence was ${adhr}/7 days. Macros held steady to establish consistency before metabolic adjustments.`;
+      } else {
+        // Apply 0.5 lb to 1.5 lb Fluctuation Buffer Window
+        if (absDeltaW >= 0.5 && absDeltaW <= 1.5) {
+          rationale = `Weight changed by ${deltaW > 0 ? '+' : ''}${deltaW.toFixed(1)} lbs, which falls within the normal physiological fluctuation window (0.5–1.5 lbs from water, glycogen, or sodium shifts). Calorie targets held steady until weight stabilizes.`;
+        } else {
+          if (phase === "fat_loss") {
+            if (pctChange > -0.3 && deltaW > -0.5) {
+              if (rRecovery <= 2 || rStrength <= 2) {
+                newAvgCals = Math.round(currC * 0.96);
+                rationale = `Weight loss stalled (${pctChange.toFixed(2)}%), but recovery/strength is depressed. Applied a conservative 4% drop to preserve training output.`;
+              } else {
+                newAvgCals = Math.round(currC * 0.92);
+                rationale = `Weight loss stalled (${pctChange.toFixed(2)}% change). Scaled calories down 8% (~${currC - newAvgCals} kcal) to restart fat loss.`;
+              }
+            } else if (pctChange < -1.5 || deltaW < -2.0) {
+              newAvgCals = Math.round(currC * 1.05);
+              rationale = `Weight loss rate was too rapid (${Math.abs(pctChange).toFixed(2)}% drop). Increased calories 5% to protect lean tissue.`;
+            } else {
+              rationale = `Fat loss rate is on track. Calorie targets held steady.`;
+            }
+          } else if (phase === "hypertrophy") {
+            if (deltaW < -0.5) {
+              newAvgCals = currC + 175;
+              rationale = `Weight decreased by ${Math.abs(deltaW).toFixed(1)} lbs during a muscle gain phase. Added +175 kcal daily to reverse loss and establish the target surplus.`;
+            } else if (pctChange < 0.1 && deltaW <= 0.4) {
+              newAvgCals = currC + 125;
+              rationale = `Scale weight stalled in surplus (${pctChange.toFixed(2)}% change). Added 125 kcal daily.`;
+            } else if (pctChange > 0.6 || deltaW > 2.0) {
+              newAvgCals = currC - 75;
+              rationale = `Surplus progressing faster than optimal lean tissue gain (${pctChange.toFixed(2)}% gain). Trimmed 75 kcal to minimize fat gain.`;
+            } else {
+              rationale = `Hypertrophy surplus rate is right on track. Targets held steady.`;
+            }
+          } else {
+            rationale = `Maintenance phase targets held to stabilize body mass.`;
+          }
+        }
+      }
+
+      if (rDiet <= 2) {
+        rationale += ` [Low appetite protocol: Fast-digesting / liquid carbs enabled for ease of consumption]`;
+      }
+      if (rDigestion <= 2) {
+        rationale += ` [Low digestion detected (${rDigestion}/5): Substituted heavy fibrous starches with fast-digesting carbohydrates to reduce GI load]`;
+      }
+
+      const pro = Math.round(currW * 1.0);
+      let baseCarb, baseFat, resolvedBaseCals;
+
+      if (archetype === "carnivore") {
+        baseCarb = 0;
+        baseFat = Math.round((newAvgCals - (pro * 4)) / 9);
+        resolvedBaseCals = (pro * 4) + (baseFat * 9);
+      } else if (archetype === "keto") {
+        baseCarb = 25;
+        baseFat = Math.round((newAvgCals - (pro * 4) - (25 * 4)) / 9);
+        resolvedBaseCals = (pro * 4) + (25 * 4) + (baseFat * 9);
+      } else {
+        baseFat = Math.max(45, Math.round((newAvgCals * 0.25) / 9));
+        baseCarb = Math.max(50, Math.round((newAvgCals - (pro * 4) - (baseFat * 9)) / 4));
+        resolvedBaseCals = (pro * 4) + (baseCarb * 4) + (baseFat * 9);
+      }
+
+      const weeklyBudget = resolvedBaseCals * 7;
+
+      state = {
+        phase,
+        currentWeight: currW,
+        mealCount: numMeals,
+        carbCycling: isCycling && archetype !== "carnivore",
+        trainingDays: trainDays,
+        dailyBaseline: { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat },
+        trainingDayTargets: null,
+        restDayTargets: null,
+        activeView: isCycling && archetype !== "carnivore" ? "train" : "baseline",
+        bioScores: { strength: rStrength, recovery: rRecovery, digestion: rDigestion, satiety: rDiet },
+        dietArchetype: archetype,
+        selectedOptions: {}
+      };
+
+      try {
+        localStorage.setItem('trainer_macro_cache', JSON.stringify(state));
+      } catch (e) {
+        console.warn('Unable to save check-in cache locally (storage may be full or blocked):', e);
+      }
+
+      if (isCycling && archetype !== "carnivore") {
+        const rawTrainCals = Math.round(resolvedBaseCals * 1.10);
+        const rawRestCals = Math.round((weeklyBudget - (trainDays * rawTrainCals)) / restDays);
+
+        const trainFat = Math.max(40, Math.round((rawTrainCals * 0.20) / 9));
+        const trainCarb = Math.max(60, Math.round((rawTrainCals - (pro * 4) - (trainFat * 9)) / 4));
+        const trainCals = (pro * 4) + (trainCarb * 4) + (trainFat * 9);
+
+        const restFat = Math.max(45, Math.round((rawRestCals * 0.30) / 9));
+        const restCarb = Math.max(30, Math.round((rawRestCals - (pro * 4) - (restFat * 9)) / 4));
+        const restCals = (pro * 4) + (restCarb * 4) + (restFat * 9);
+
+        state.trainingDayTargets = { calories: trainCals, protein: pro, carbs: trainCarb, fats: trainFat };
+        state.restDayTargets = { calories: restCals, protein: pro, carbs: restCarb, fats: restFat };
+        
+        const tabSelect = document.getElementById('tabSelection');
+        if (tabSelect) tabSelect.style.display = 'flex';
+        switchDayView('train');
+      } else {
+        const tabSelect = document.getElementById('tabSelection');
+        if (tabSelect) tabSelect.style.display = 'none';
+        renderMealPlan(state.dailyBaseline);
+      }
+
+      const disclaimerBox = document.getElementById('dietDisclaimer');
+      if (disclaimerBox) {
+        if (archetype === "carnivore") {
+          disclaimerBox.innerHTML = `<strong>⚠️ Carnivore Protocol Active:</strong> Carbohydrates are set to 0g. Ensure 3,000–5,000mg elemental sodium and potassium/magnesium electrolytes daily.`;
+          disclaimerBox.style.display = 'block';
+        } else if (archetype === "vegan") {
+          disclaimerBox.innerHTML = `<strong>🌱 100% Plant-Based Protocol Active:</strong> All animal products excluded. Protein matched via complete plant isolates, tofu, and tempeh.`;
+          disclaimerBox.style.display = 'block';
+        } else {
+          disclaimerBox.style.display = 'none';
+        }
+      }
+
+      processFoodRequests(resolvedBaseCals, pro);
+
+      const rationaleEl = document.getElementById('resRationale');
+      if (rationaleEl) rationaleEl.innerText = rationale;
+
+      const resContainer = document.getElementById('resultsContainer');
+      if (resContainer) {
+        resContainer.style.display = 'block';
+        resContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } catch (err) {
+      console.error("Error generating coaching plan:", err);
+      alert("An error occurred while calculating the meal plan. Please check your inputs.");
     }
-
-    processFoodRequests(resolvedBaseCals, pro);
-
-    document.getElementById('resRationale').innerText = rationale;
-    document.getElementById('resultsContainer').style.display = 'block';
   }
 
   function processFoodRequests(dailyCals, proteinTarget) {
-    const rawReq = document.getElementById('favFoods').value.toLowerCase();
+    const rawReq = (document.getElementById('favoriteFoods')?.value || '').toLowerCase();
     const flexPanel = document.getElementById('flexTreatPanel');
     const flexText = document.getElementById('flexTreatText');
 
-    if (!rawReq.trim()) {
-      flexPanel.style.display = 'none';
+    if (!rawReq.trim() || state.dietArchetype === "carnivore") {
+      if (flexPanel) flexPanel.style.display = 'none';
       return;
     }
 
     const matchedTreat = TREAT_DATABASE.find(t => rawReq.includes(t.key));
 
-    if (matchedTreat) {
+    if (matchedTreat && flexPanel && flexText) {
       const dailyTrim = Math.round(matchedTreat.cals / 6);
       const sameDayCarbDrop = Math.round(matchedTreat.c * 0.8);
       const sameDayFatDrop = Math.round(matchedTreat.f * 0.8);
@@ -379,431 +1101,161 @@
         </ul>
       `;
       flexPanel.style.display = 'block';
-    } else {
+    } else if (flexPanel) {
       flexPanel.style.display = 'none';
     }
   }
 
   function switchDayView(type) {
     state.activeView = type;
-    document.getElementById('tabTrain').className = `tab-btn ${type === 'train' ? 'active' : ''}`;
-    document.getElementById('tabRest').className = `tab-btn ${type === 'rest' ? 'active' : ''}`;
+    const tabTrain = document.getElementById('tabTrain');
+    const tabRest = document.getElementById('tabRest');
+    if (tabTrain) tabTrain.className = `tab-btn ${type === 'train' ? 'active' : ''}`;
+    if (tabRest) tabRest.className = `tab-btn ${type === 'rest' ? 'active' : ''}`;
     const targetObj = type === 'train' ? state.trainingDayTargets : state.restDayTargets;
-    renderMealPlan(targetObj);
+    if (targetObj) renderMealPlan(targetObj);
   }
 
-  const FUNCTIONAL_CATEGORIES = [
-    {
-      group: "Dark Polyphenol & Nitric Oxide Category",
-      liquidOptions: "Pomegranate juice, Beetroot juice, Tart cherry juice, or Concord grape juice",
-      wholeOptions: "Blackberries, Wild blueberries, Dark sweet cherries, Raspberries, or Roasted red beets",
-      produceOptions: "Baby spinach, Swiss chard, Arugula, or Steamed kale"
-    },
-    {
-      group: "Citrus, Vitamin C & Enzyme Category",
-      liquidOptions: "100% Orange juice, Grapefruit juice, Fresh pineapple juice, or Cold-pressed lemonade",
-      wholeOptions: "Kiwi, Sliced strawberries, Diced mango, Cantaloupe, or Fresh orange wedges",
-      produceOptions: "Red/yellow bell peppers, Steamed broccoli, Cauliflower, or Brussels sprouts"
-    },
-    {
-      group: "Electrolyte, Potassium & Hydration Category",
-      liquidOptions: "100% Pure coconut water, Simmered bone broth, Sports electrolyte beverage, or Apple cider",
-      wholeOptions: "Banana, Honeydew melon, Watermelon, Dried apricots, or Medjool dates",
-      produceOptions: "Grilled asparagus, Sautéed zucchini, Yellow squash, Celery, or Sliced cucumbers"
-    },
-    {
-      group: "Anthocyanin & Recovery Category",
-      liquidOptions: "100% Tart cherry juice, Cranberry juice (100% pure), or Antioxidant tea blend with honey",
-      wholeOptions: "Dark sweet cherries, Red plums, Pomegranate arils, or Mixed dark berries",
-      produceOptions: "Steamed green beans, Sautéed zucchini, Mixed dark greens, or Roasted asparagus"
-    }
-  ];
+  function selectMealOption(mealIdx, optionIdx) {
+    state.selectedOptions[mealIdx] = optionIdx;
+    const block = document.getElementById(`meal-block-${mealIdx}`);
+    if (!block) return;
+    const cards = block.querySelectorAll('.recipe-card');
+    cards.forEach((card, idx) => {
+      const radio = card.querySelector('input[type="radio"]');
+      if (idx === optionIdx) {
+        card.classList.add('selected');
+        card.classList.remove('dimmed');
+        if (radio) radio.checked = true;
+      } else {
+        card.classList.remove('selected');
+        card.classList.add('dimmed');
+        if (radio) radio.checked = false;
+      }
+    });
+  }
 
   function renderMealPlan(macros) {
-    document.getElementById('viewCals').innerText = macros.calories;
-    document.getElementById('viewPro').innerText = `${macros.protein}g`;
-    document.getElementById('viewCarb').innerText = `${macros.carbs}g`;
-    document.getElementById('viewFat').innerText = `${macros.fats}g`;
+    if (!macros) return;
 
-    const restrictionsText = document.getElementById('dietRestrictions').value.toLowerCase();
-    const favText = document.getElementById('favFoods').value.toLowerCase();
-    const numMeals = state.mealCount;
+    const viewCals = document.getElementById('viewCals');
+    const viewPro = document.getElementById('viewPro');
+    const viewCarb = document.getElementById('viewCarb');
+    const viewFat = document.getElementById('viewFat');
+
+    if (viewCals) viewCals.innerText = macros.calories;
+    if (viewPro) viewPro.innerText = `${macros.protein}g`;
+    if (viewCarb) viewCarb.innerText = `${macros.carbs}g`;
+    if (viewFat) viewFat.innerText = `${macros.fats}g`;
+
+    const restrictionsText = (document.getElementById('dietaryRestrictions')?.value || '').toLowerCase();
+    const favText = (document.getElementById('favoriteFoods')?.value || '').toLowerCase();
+    const numMeals = state.mealCount || 4;
+    const archetype = state.dietArchetype || 'omnivore';
     
-    // Biofeedback conditions for converting dense whole starches to liquid carbs
-    const poorDigestion = state.bioScores.digestion <= 2;
-    const poorAppetite = state.bioScores.satiety <= 2;
-    const heavySurplus = state.phase === 'hypertrophy' && macros.calories >= 3000;
-    const needsLiquidShift = poorDigestion || (poorAppetite && state.phase === 'hypertrophy') || heavySurplus;
+    const isLowAppetite = state.bioScores.satiety <= 2;
+    const isPoorDigestion = state.bioScores.digestion <= 2;
+    const isHeavySurplus = state.phase === 'hypertrophy' && macros.calories >= 3000;
+    const enableLiquidCarbs = (isLowAppetite || isPoorDigestion || isHeavySurplus) && archetype !== "carnivore";
 
-    document.getElementById('matrixTitle').innerText = `Complete Formulated Meal Plans (${numMeals} Meals / Day)`;
+    const matrixTitle = document.getElementById('matrixTitle');
+    if (matrixTitle) matrixTitle.innerText = `Complete Formulated Meal Plans (${numMeals} Meals / Day · ${archetype.toUpperCase()})`;
 
     const container = document.getElementById('mealMatrixContainer');
+    if (!container) return;
     container.innerHTML = '';
 
-    const pTgt = Math.round(macros.protein / numMeals);
-    const cTgt = Math.round(macros.carbs / numMeals);
-    const fTgt = Math.round(macros.fats / numMeals);
-
-    function resolveFunctionalCarbsAndProduce(carbsRemaining, mealIndex) {
-      const activeCategory = FUNCTIONAL_CATEGORIES[(mealIndex - 1) % FUNCTIONAL_CATEGORIES.length];
-      let addOns = [];
-
-      if (carbsRemaining > 0) {
-        if (needsLiquidShift) {
-          const juiceOz = Math.round(carbsRemaining / 3.5);
-          addOns.push(`<strong>Fast-Digesting Fluid (${activeCategory.group}):</strong> ${juiceOz} fl oz of your choice (${activeCategory.liquidOptions}) <em>[Liquid shift enabled to relieve gut volume]</em>`);
-        } else {
-          const fruitG = Math.round(carbsRemaining / 0.12);
-          addOns.push(`<strong>Whole Fruit Addition (${activeCategory.group}):</strong> ${fruitG}g (~${toOz(fruitG)} oz) of your choice (${activeCategory.wholeOptions})`);
-        }
+    // Distribute macros across meals so the per-meal amounts sum exactly to
+    // the daily total (previous version rounded each meal independently,
+    // which could drift a few grams off the daily target).
+    const distribute = (total) => {
+      const base = Math.floor(total / numMeals);
+      let remainder = total - (base * numMeals);
+      const parts = [];
+      for (let i = 0; i < numMeals; i++) {
+        parts.push(base + (remainder > 0 ? 1 : 0));
+        if (remainder > 0) remainder--;
       }
-
-      return {
-        carbItems: addOns,
-        produceItem: `<strong>Produce Profile (${activeCategory.group}):</strong> 1-2 cups of your choice (${activeCategory.produceOptions})`
-      };
-    }
-
-    const MASTER_MEAL_RECIPES = {
-      breakfast: [
-        {
-          name: "Option 1: Scramble, Sourdough Toast & Functional Fruit/Liquid",
-          keywords: ["egg", "toast", "sourdough"],
-          build: (p, c, f, mealIdx) => {
-            const wholeEggs = f >= 10 ? 2 : (f >= 5 ? 1 : 0);
-            const fatFromEggs = wholeEggs * 5;
-            const proFromEggs = wholeEggs * 6;
-
-            // Inherent Fat Subtraction
-            const addedFatNeeded = Math.max(0, f - fatFromEggs);
-
-            // Starch-first allocation: Sourdough handles 80-100% of carbs
-            const starchRatio = needsLiquidShift ? 0.60 : 0.85;
-            const carbsForBread = Math.round(c * starchRatio);
-            const toastSlices = Math.max(1, Math.round(carbsForBread / 15));
-            const carbsFromToast = toastSlices * 15;
-            const proFromToast = toastSlices * 3;
-            let carbsRemaining = Math.max(0, c - carbsFromToast);
-
-            const eggWhiteGrams = Math.max(50, Math.round((p - proFromEggs - proFromToast) / 0.11));
-            const oilTsp = (addedFatNeeded / 4.5).toFixed(1);
-
-            let items = [];
-            if (wholeEggs > 0) items.push(`<strong>Whole Eggs:</strong> ${wholeEggs} large (${fatFromEggs}g inherent fat)`);
-            items.push(`<strong>Liquid Egg Whites (Raw):</strong> ${eggWhiteGrams}g (~${toOz(eggWhiteGrams)} oz)`);
-            items.push(`<strong>Sourdough Bread:</strong> ${toastSlices} slices toasted (${carbsFromToast}g carbs)`);
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-
-            if (addedFatNeeded > 2) {
-              items.push(`<strong>Added Fat (Grass-Fed Butter / Olive Oil):</strong> ${oilTsp} tsp [Deducted ${fatFromEggs}g egg fat]`);
-            } else {
-              items.push(`<strong>Added Cooking Fat:</strong> None needed (Meal fat target covered by whole eggs)`);
-            }
-
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        },
-        {
-          name: "Option 2: High-Protein Oatmeal Power Bowl (Milk Deducted)",
-          keywords: ["oat", "oatmeal", "whey", "peanut butter", "berries", "milk", "fairlife"],
-          build: (p, c, f, mealIdx) => {
-            let workingP = p;
-            let workingC = c;
-            let workingF = f;
-            let milkItem = null;
-
-            if (needsLiquidShift && !restrictionsText.includes("dairy")) {
-              const milkOz = 8;
-              const milkPro = 13;
-              const milkCarb = 6;
-              const milkFat = 4.5;
-
-              workingP = Math.max(15, workingP - milkPro);
-              workingC = Math.max(10, workingC - milkCarb);
-              workingF = Math.max(0, workingF - milkFat);
-              milkItem = `<strong>Fairlife 2% / Whole Milk (Base for Oats/Shake):</strong> ${milkOz} fl oz (Pre-deducted: 13g P, 6g C, 4.5g F)`;
-            }
-
-            // Whole Starch: Rolled oats (80g = 1 cup, 40g = 1/2 cup)
-            const starchRatio = needsLiquidShift ? 0.70 : 0.90;
-            const carbsForOats = Math.round(workingC * starchRatio);
-            const dryOatsGrams = Math.round(carbsForOats / 0.68);
-            const oatsHalfCups = (dryOatsGrams / 40).toFixed(1);
-            const carbsFromOats = Math.round(dryOatsGrams * 0.68);
-            const proFromOats = Math.round(dryOatsGrams * 0.13);
-            const fatFromOats = Math.round(dryOatsGrams * 0.06);
-
-            let carbsRemaining = Math.max(0, workingC - carbsFromOats);
-            const addedFatNeeded = Math.max(0, workingF - fatFromOats);
-
-            const pbGrams = Math.round(addedFatNeeded / 0.50);
-            const proFromPB = Math.round(pbGrams * 0.25);
-            const wheyGrams = Math.max(15, Math.round((workingP - proFromOats - proFromPB) / 0.75));
-
-            let items = [];
-            if (milkItem) items.push(milkItem);
-            items.push(`<strong>Rolled Oats (Dry):</strong> ${dryOatsGrams}g (~${oatsHalfCups} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups)`);
-            items.push(`<strong>Whey / Plant Protein:</strong> ${wheyGrams}g (~${(wheyGrams / 25).toFixed(1)} scoops stirred in)`);
-            if (pbGrams > 0) items.push(`<strong>All-Natural Peanut / Almond Butter:</strong> ${pbGrams}g (~${(pbGrams / 16).toFixed(1)} tbsp) [Deducted ${fatFromOats}g oat fat]`);
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            return items;
-          }
-        },
-        {
-          name: "Option 3: Greek Yogurt & Cream of Rice Parfait",
-          keywords: ["yogurt", "greek yogurt", "cream of rice", "cor", "dairy"],
-          build: (p, c, f, mealIdx) => {
-            const starchRatio = needsLiquidShift ? 0.70 : 0.90;
-            const carbsForCor = Math.round(c * starchRatio);
-            const corGrams = Math.round(carbsForCor / 0.80);
-            const carbsRemaining = Math.max(0, c - Math.round(corGrams * 0.80));
-            const fatGrams = Math.round(f / 0.50);
-            const greekYogurtGrams = Math.max(120, Math.round(p / 0.10));
-
-            let items = [
-              `<strong>0% Plain Greek Yogurt:</strong> ${greekYogurtGrams}g (~${toOz(greekYogurtGrams)} oz)`,
-              `<strong>Cream of Rice (Dry Measure):</strong> ${corGrams}g (~${toOz(corGrams)} oz)`,
-              `<strong>Almonds / Walnuts / Chia Seeds:</strong> ${fatGrams}g (~${toOz(fatGrams)} oz)`
-            ];
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            return items;
-          }
-        }
-      ],
-      lunch: [
-        {
-          name: "Option 1: Chicken Breast & Jasmine Rice Bowl",
-          keywords: ["chicken", "rice", "jasmine rice"],
-          build: (p, c, f, mealIdx) => {
-            // Starch fulfillment: Jasmine Rice covers 85-100%
-            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
-            const carbsForRice = Math.round(c * starchRatio);
-            const riceGrams = Math.round(carbsForRice / 0.80);
-            const carbsFromRice = Math.round(riceGrams * 0.80);
-            const proFromRice = Math.round(riceGrams * 0.07);
-
-            const chickenGrams = Math.round((p - proFromRice) / 0.23);
-            const inherentChickenFat = Math.round(chickenGrams * 0.025); // ~2.5% fat in lean breast
-            const addedFatNeeded = Math.max(0, f - inherentChickenFat);
-            const oilTsp = (addedFatNeeded / 4.5).toFixed(1);
-
-            let carbsRemaining = Math.max(0, c - carbsFromRice);
-            let items = [
-              `<strong>Chicken Breast (Raw):</strong> ${chickenGrams}g (~${toOz(chickenGrams)} oz)`,
-              `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry)`,
-              `<strong>Added Extra Virgin Olive Oil:</strong> ${oilTsp} tsp drizzle [Deducted ${inherentChickenFat}g inherent chicken fat]`
-            ];
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        },
-        {
-          name: "Option 2: 93/7 Ground Turkey & Diced Potato Hash",
-          keywords: ["turkey", "ground turkey", "potato", "avocado"],
-          build: (p, c, f, mealIdx) => {
-            const starchRatio = needsLiquidShift ? 0.60 : 0.85;
-            const carbsForPot = Math.round(c * starchRatio);
-            const potatoGrams = Math.round(carbsForPot / 0.17);
-            const carbsFromPot = Math.round(potatoGrams * 0.17);
-            const proFromPot = Math.round(potatoGrams * 0.02);
-
-            const turkeyGrams = Math.round((p - proFromPot) / 0.20);
-            const inherentTurkeyFat = Math.round(turkeyGrams * 0.07); // 7% fat in 93/7
-            const addedFatNeeded = Math.max(0, f - inherentTurkeyFat);
-            const avoGrams = Math.round(addedFatNeeded / 0.15);
-
-            let carbsRemaining = Math.max(0, c - carbsFromPot);
-            let items = [
-              `<strong>93/7 Lean Ground Turkey (Raw):</strong> ${turkeyGrams}g (~${toOz(turkeyGrams)} oz) [Contains ${inherentTurkeyFat}g inherent fat]`,
-              `<strong>Red / Russet Potatoes (Raw Diced):</strong> ${potatoGrams}g (~${toOz(potatoGrams)} oz)`
-            ];
-
-            if (addedFatNeeded > 2) {
-              items.push(`<strong>Added Fresh Avocado / Oil:</strong> ${avoGrams}g avocado (~${(addedFatNeeded / 4.5).toFixed(1)} tsp oil)`);
-            } else {
-              items.push(`<strong>Added Fat:</strong> None needed (Meal fat target covered by 93/7 turkey)`);
-            }
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        },
-        {
-          name: "Option 3: Lean Fish, Rice Noodles & Performance Pairing",
-          keywords: ["fish", "cod", "tilapia", "pasta", "noodles"],
-          build: (p, c, f, mealIdx) => {
-            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
-            const carbsForPasta = Math.round(c * starchRatio);
-            const pastaGrams = Math.round(carbsForPasta / 0.75);
-            const carbsFromPasta = Math.round(pastaGrams * 0.75);
-            const proFromPasta = Math.round(pastaGrams * 0.08);
-
-            const fishGrams = Math.round((p - proFromPasta) / 0.18);
-            const inherentFishFat = Math.round(fishGrams * 0.02);
-            const addedFatNeeded = Math.max(0, f - inherentFishFat);
-            const oilTsp = (addedFatNeeded / 4.5).toFixed(1);
-
-            let carbsRemaining = Math.max(0, c - carbsFromPasta);
-            let items = [
-              `<strong>Cod / Tilapia / White Fish (Raw):</strong> ${fishGrams}g (~${toOz(fishGrams)} oz)`,
-              `<strong>Rice Noodles / Gluten-Free Pasta (Dry):</strong> ${pastaGrams}g (~${toOz(pastaGrams)} oz)`,
-              `<strong>Added Extra Virgin Olive Oil:</strong> ${oilTsp} tsp [Deducted ${inherentFishFat}g fish fat]`
-            ];
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        }
-      ],
-      dinner: [
-        {
-          name: "Option 1: Top Sirloin Steak & Roasted Sweet Potato",
-          keywords: ["steak", "sirloin", "sweet potato", "butter"],
-          build: (p, c, f, mealIdx) => {
-            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
-            const carbsForSP = Math.round(c * starchRatio);
-            const sweetPotGrams = Math.round(carbsForSP / 0.20);
-            const carbsFromSP = Math.round(sweetPotGrams * 0.20);
-
-            const steakGrams = Math.round(p / 0.22);
-            const inherentSteakFat = Math.round(steakGrams * 0.055); // ~5.5% fat in top sirloin
-            const addedFatNeeded = Math.max(0, f - inherentSteakFat);
-            const butterTsp = (addedFatNeeded / 4.5).toFixed(1);
-
-            let carbsRemaining = Math.max(0, c - carbsFromSP);
-            let items = [
-              `<strong>Top Sirloin Steak (Raw):</strong> ${steakGrams}g (~${toOz(steakGrams)} oz) [Contains ${inherentSteakFat}g inherent fat]`,
-              `<strong>Sweet Potato / Yams (Raw):</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz)`
-            ];
-
-            if (addedFatNeeded > 2) {
-              items.push(`<strong>Added Grass-Fed Butter / Ghee:</strong> ${butterTsp} tsp on potato [Deducted ${inherentSteakFat}g steak fat]`);
-            } else {
-              items.push(`<strong>Added Fat:</strong> None needed (Meal fat covered by sirloin steak)`);
-            }
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        },
-        {
-          name: "Option 2: 93/7 Lean Ground Beef & Jasmine Rice Bowl",
-          keywords: ["ground beef", "beef", "rice", "avocado"],
-          build: (p, c, f, mealIdx) => {
-            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
-            const carbsForRice = Math.round(c * starchRatio);
-            const riceGrams = Math.round(carbsForRice / 0.80);
-            const carbsFromRice = Math.round(riceGrams * 0.80);
-            const proFromRice = Math.round(riceGrams * 0.07);
-
-            const beefGrams = Math.round((p - proFromRice) / 0.21);
-            const inherentBeefFat = Math.round(beefGrams * 0.075); // 7.5% fat in 93/7 beef
-            const addedFatNeeded = Math.max(0, f - inherentBeefFat);
-            const avoGrams = Math.round(addedFatNeeded / 0.15);
-
-            let carbsRemaining = Math.max(0, c - carbsFromRice);
-            let items = [
-              `<strong>93/7 Lean Ground Beef (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [Contains ${inherentBeefFat}g inherent fat]`,
-              `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry)`
-            ];
-
-            if (addedFatNeeded > 2) {
-              items.push(`<strong>Added Fresh Avocado / Olive Oil:</strong> ${avoGrams}g avocado (~${(addedFatNeeded / 4.5).toFixed(1)} tsp oil)`);
-            } else {
-              items.push(`<strong>Added Fat:</strong> None needed (Meal fat fully covered by 93/7 beef fat: ${inherentBeefFat}g)`);
-            }
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        },
-        {
-          name: "Option 3: Atlantic Salmon & Yukon Gold Potato Mash",
-          keywords: ["salmon", "fish", "potato"],
-          build: (p, c, f, mealIdx) => {
-            const starchRatio = needsLiquidShift ? 0.65 : 0.90;
-            const carbsForPot = Math.round(c * starchRatio);
-            const potGrams = Math.round(carbsForPot / 0.17);
-            const carbsFromPot = Math.round(potGrams * 0.17);
-
-            const salmonGrams = Math.round(p / 0.20);
-            const inherentSalmonFat = Math.round(salmonGrams * 0.13); // ~13% fat in salmon
-            const addedFatNeeded = Math.max(0, f - inherentSalmonFat);
-
-            let carbsRemaining = Math.max(0, c - carbsFromPot);
-            let items = [
-              `<strong>Atlantic Salmon Fillet (Raw):</strong> ${salmonGrams}g (~${toOz(salmonGrams)} oz) [Contains ${inherentSalmonFat}g inherent omega-3 fats]`,
-              `<strong>Yukon Gold Potatoes (Raw):</strong> ${potGrams}g (~${toOz(potGrams)} oz)`
-            ];
-
-            if (addedFatNeeded > 2) {
-              items.push(`<strong>Added Fat:</strong> ${(addedFatNeeded / 4.5).toFixed(1)} tsp olive oil [Deducted ${inherentSalmonFat}g salmon fat]`);
-            } else {
-              items.push(`<strong>Added Fat:</strong> None needed (Salmon naturally covers/exceeds meal fat requirement: ${inherentSalmonFat}g)`);
-            }
-
-            const functionalData = resolveFunctionalCarbsAndProduce(carbsRemaining, mealIdx);
-            items.push(...functionalData.carbItems);
-            items.push(functionalData.produceItem);
-            return items;
-          }
-        }
-      ]
+      return parts;
     };
-
-    function filterRecipes(list) {
-      return list.filter(recipe => {
-        if (restrictionsText) {
-          const isRestricted = recipe.keywords.some(k => restrictionsText.includes(k));
-          if (isRestricted) return false;
-        }
-        return true;
-      });
-    }
+    const pParts = distribute(macros.protein);
+    const cParts = distribute(macros.carbs);
+    const fParts = distribute(macros.fats);
 
     for (let i = 1; i <= numMeals; i++) {
-      let recipeSet;
+      let slot;
       let title;
 
       if (i === 1) {
-        recipeSet = MASTER_MEAL_RECIPES.breakfast;
-        title = numMeals === 2 ? "Meal 1: Breakfast / Fast-Breaking Window" : "Meal 1: Breakfast";
+        slot = "breakfast";
+        title = numMeals === 2 ? "Meal 1: Fast-Breaking Window" : "Meal 1: Breakfast";
       } else if (i === numMeals) {
-        recipeSet = MASTER_MEAL_RECIPES.dinner;
+        slot = "dinner";
         title = `Meal ${i}: Dinner & Recovery`;
       } else {
-        recipeSet = MASTER_MEAL_RECIPES.lunch;
-        title = numMeals === 3 ? "Meal 2: Lunch" : `Meal ${i}: Lunch / Midday Meal ${i - 1}`;
+        slot = "lunch";
+        title = numMeals === 3 ? "Meal 2: Lunch" : `Meal ${i}: Midday Meal ${i - 1}`;
       }
 
-      const validRecipes = filterRecipes(recipeSet);
+      let matchedRecipes = RECIPE_DATABASE.filter(r => {
+        const slotMatch = r.slot === slot || r.slot === "any";
+        const archMatch = r.archetype.includes(archetype);
+        if (!slotMatch || !archMatch) return false;
+
+        if (restrictionsText) {
+          const bans = restrictionsText.split(/[,/]/).map(s => s.trim().toLowerCase()).filter(Boolean);
+          const hasBan = bans.some(b => {
+            if (["vegan", "plant-based", "carnivore", "keto", "paleo"].includes(b)) return false;
+            return r.keywords.some(k => k.includes(b) || b.includes(k));
+          });
+          if (hasBan) return false;
+        }
+        return true;
+      });
+
+      if (matchedRecipes.length === 0) {
+        matchedRecipes = RECIPE_DATABASE.filter(r => (r.slot === slot || r.slot === "any") && r.archetype.includes(archetype));
+      }
+
+      if (matchedRecipes.length === 0) {
+        matchedRecipes = RECIPE_DATABASE.filter(r => r.archetype.includes(archetype));
+      }
+
+      if (favText) {
+        const favs = favText.split(/[,/]/).map(s => s.trim().toLowerCase()).filter(Boolean);
+        matchedRecipes.sort((a, b) => {
+          const aFav = favs.some(f => a.keywords.some(k => k.includes(f)));
+          const bFav = favs.some(f => b.keywords.some(k => k.includes(f)));
+          return (bFav ? 1 : 0) - (aFav ? 1 : 0);
+        });
+      }
+
+      const activeCat = FUNCTIONAL_CATEGORIES[(i - 1) % FUNCTIONAL_CATEGORIES.length];
+      
+      const helperOptions = {
+        enableLiquid: enableLiquidCarbs,
+        produce: `<strong>Produce Profile (${activeCat.group}):</strong> 1-2 cups (${activeCat.produceOptions})`
+      };
+
       const mealDiv = document.createElement('div');
       mealDiv.className = 'meal-block';
+      mealDiv.id = `meal-block-${i}`;
 
-      let recipesHTML = validRecipes.map(recipe => {
-        const ingredients = recipe.build(pTgt, cTgt, fTgt, i);
+      const selectedIdx = state.selectedOptions[i] !== undefined ? state.selectedOptions[i] : 0;
+      state.selectedOptions[i] = selectedIdx;
+
+      const pTgt = pParts[i - 1];
+      const cTgt = cParts[i - 1];
+      const fTgt = fParts[i - 1];
+
+      let recipesHTML = matchedRecipes.slice(0, 3).map((recipe, optIdx) => {
+        const ingredients = recipe.build(pTgt, cTgt, fTgt, helperOptions);
         const listItems = ingredients.map(ing => `<li>• ${ing}</li>`).join('');
+        const isSel = optIdx === selectedIdx;
         return `
-          <div class="recipe-card">
+          <div class="recipe-card ${isSel ? 'selected' : 'dimmed'}" onclick="selectMealOption(${i}, ${optIdx})">
             <div class="recipe-title">
+              <input type="radio" name="meal-select-${i}" ${isSel ? 'checked' : ''} onclick="event.stopPropagation(); selectMealOption(${i}, ${optIdx});">
               <span>${recipe.name}</span>
             </div>
             <ul class="recipe-ingredients">${listItems}</ul>
@@ -816,7 +1268,16 @@
           <span>${title}</span>
           <span class="meal-target-pill">${pTgt}g Protein · ${cTgt}g Carbs · ${fTgt}g Fat</span>
         </div>
-        ${recipesHTML || '<div style="font-size:0.8rem; color:#94a3b8;">No recipes match current restrictions.</div>'}
+        ${recipesHTML}
+        
+        <details class="swap-sheet no-print">
+          <summary>🔄 Quick Food Swaps & Conversions (1:1 Equivalencies)</summary>
+          <ul>
+            <li><strong>Carb Swaps:</strong> 50g Dry Jasmine Rice ≈ 200g Raw Sweet Potato ≈ 60g Dry Oats ≈ 2.5 slices Sourdough Bread (~40g Net Carbs).</li>
+            <li><strong>Protein Swaps:</strong> 150g Raw Chicken Breast ≈ 165g Raw 93/7 Ground Turkey ≈ 160g Top Sirloin ≈ 150g Extra Firm Tofu + 1 scoop Pea Protein (~35g Protein).</li>
+            <li><strong>Fat Swaps:</strong> 1 tsp Olive/Avocado Oil (4.5g) ≈ 30g Fresh Avocado ≈ 9g Natural Almond/Peanut Butter ≈ 8g Tahini.</li>
+          </ul>
+        </details>
       `;
 
       container.appendChild(mealDiv);
@@ -824,15 +1285,15 @@
   }
 
   function copyCompletePlan() {
-    let t = `FORMULATED NUTRITION PROTOCOL (${state.mealCount} Meals/Day)\n`;
+    let t = `UNIVERSAL NUTRITION PROTOCOL (${(state.dietArchetype || 'omnivore').toUpperCase()} · ${state.mealCount} Meals/Day)\n`;
     if (state.carbCycling) {
       t += `TRAINING DAYS (${state.trainingDays}x/wk): ${state.trainingDayTargets.calories} kcal (P: ${state.trainingDayTargets.protein}g | C: ${state.trainingDayTargets.carbs}g | F: ${state.trainingDayTargets.fats}g)\n`;
       t += `REST DAYS (${7 - state.trainingDays}x/wk): ${state.restDayTargets.calories} kcal (P: ${state.restDayTargets.protein}g | C: ${state.restDayTargets.carbs}g | F: ${state.restDayTargets.fats}g)\n`;
     } else {
       t += `DAILY TARGETS: ${state.dailyBaseline.calories} kcal (P: ${state.dailyBaseline.protein}g | C: ${state.dailyBaseline.carbs}g | F: ${state.dailyBaseline.fats}g)\n`;
     }
-    t += `\nGuidelines: Choose 1 full meal option per time slot. Measure all food in raw, uncooked weights. Whole starches are prioritized for 80-100% of carbs, and inherent meat/egg fat is subtracted from all added cooking oils.`;
-    navigator.clipboard.writeText(t).then(() => alert("Complete protocol copied to clipboard!"));
+    t += `\nGuidelines: Measure all food in raw/uncooked weights. Exact dietary archetype constraints and inherent fat deductions are enforced.`;
+    navigator.clipboard.writeText(t).then(() => alert("Complete protocol copied to clipboard!")).catch(() => alert("Could not copy automatically — please select and copy the protocol text manually."));
   }
 </script>
 </body>
