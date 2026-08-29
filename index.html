@@ -50,6 +50,7 @@
 
     .rationale { font-size: 0.85rem; line-height: 1.45; color: #e2e8f0; background: #0f172a; padding: 12px; border-radius: 8px; margin: 10px 0; }
     .disclaimer-banner { font-size: 0.8rem; line-height: 1.4; color: #fef08a; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); padding: 10px 12px; border-radius: 8px; margin: 10px 0; display: none; }
+    .measurement-disclaimer { font-size: 0.8rem; line-height: 1.45; color: #38bdf8; background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; padding: 12px; border-radius: 8px; margin-bottom: 14px; }
 
     .tab-bar { display: flex; gap: 6px; margin: 12px 0 6px; }
     .tab-btn { flex: 1; padding: 10px; font-size: 0.85rem; font-weight: 700; border-radius: 6px; border: 1px solid var(--card-border); background: #0f172a; color: var(--text-muted); cursor: pointer; }
@@ -93,6 +94,7 @@
       .recipe-ingredients { color: #333 !important; }
       .recipe-ingredients strong { color: #000 !important; }
       .disclaimer-banner { border: 1px solid #000 !important; color: #000 !important; background: #fff !important; display: block !important; }
+      .measurement-disclaimer { border: 1px solid #000 !important; color: #000 !important; background: #f8fafc !important; }
     }
   </style>
 </head>
@@ -226,8 +228,11 @@
     </div>
 
     <div class="card">
+      <div class="measurement-disclaimer">
+        📌 <strong>All meat, poultry, seafood, and starches are measured in raw and uncooked weights. All oats, cream of rice, and dry grains are measured in dry weights prior to cooking.</strong>
+      </div>
       <h2 style="font-size: 1.1rem; margin:0 0 4px;" id="matrixTitle">Complete Formulated Meal Plans</h2>
-      <p class="no-print" style="font-size:0.75rem; color:var(--text-muted); margin:0 0 12px;">Select your preferred meal option for each time slot below. Measure all food in raw/uncooked weights.</p>
+      <p class="no-print" style="font-size:0.75rem; color:var(--text-muted); margin:0 0 12px;">Select your preferred meal option for each time slot below. Measure all food according to standard measurements.</p>
       
       <div id="mealMatrixContainer"></div>
 
@@ -267,7 +272,7 @@
 
         let items = [
           `<strong>Whole Eggs:</strong> ${wholeEggs} large (${fatFromEggs}g inherent fat)`,
-          `<strong>Liquid Egg Whites (Raw):</strong> ${eggWhites}g (~${toOz(eggWhites)} oz)`,
+          `<strong>Liquid Egg Whites:</strong> ${eggWhites}g (~${toOz(eggWhites)} oz)`,
           `<strong>Sourdough Bread:</strong> ${toastSlices} slices toasted (${carbsFromToast}g carbs)`
         ];
 
@@ -330,7 +335,7 @@
         const wheyGrams = Math.max(15, Math.round((p - proFromOats - proFromPB) / 0.75));
 
         let items = [
-          `<strong>Rolled Oats (Dry):</strong> ${dryOatsGrams}g (~${(dryOatsGrams / 40).toFixed(1)} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups) [${carbsFromOats}g carbs]`,
+          `<strong>Rolled Oats:</strong> ${dryOatsGrams}g (~${(dryOatsGrams / 40).toFixed(1)} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups) [${carbsFromOats}g carbs]`,
           `<strong>Whey / Casein Isolate:</strong> ${wheyGrams}g (~${(wheyGrams / 25).toFixed(1)} scoops stirred in)`
         ];
 
@@ -379,7 +384,7 @@
         let items = [
           `<strong>0% Plain Greek Yogurt:</strong> ${baseGy}g (~12 oz) [34g Protein base]`,
           wheyNeeded > 5 ? `<strong>Whey Isolate:</strong> ${wheyNeeded}g (~${(wheyNeeded / 25).toFixed(1)} scoops stirred in)` : `<strong>Protein Note:</strong> Fully met by Greek yogurt base`,
-          `<strong>Cream of Rice (Dry Measure):</strong> ${corGrams}g (~${toOz(corGrams)} oz) [${carbsFromCor}g carbs]`
+          `<strong>Cream of Rice:</strong> ${corGrams}g (~${toOz(corGrams)} oz) [${carbsFromCor}g carbs]`
         ];
 
         if (fruitItem) items.push(fruitItem);
@@ -409,7 +414,7 @@
         const avoGrams = Math.round(addedFat / 0.15);
 
         let items = [
-          `<strong>Extra Firm Organic Tofu (Pressed):</strong> ${tofuGrams}g (~8 oz) [${proFromTofu}g Protein, ${fatFromTofu}g fat base]`,
+          `<strong>Extra Firm Organic Tofu:</strong> ${tofuGrams}g (~8 oz) [${proFromTofu}g Protein, ${fatFromTofu}g fat base]`,
           plantPowderG > 5 ? `<strong>Pea / Rice Protein Isolate (Side Shake):</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops) [Provides remaining ${proRem}g Protein]` : '',
           `<strong>Sourdough Bread:</strong> ${toastSlices} slices toasted (${carbsFromToast}g carbs)`
         ].filter(Boolean);
@@ -448,7 +453,7 @@
         const plantPowderG = Math.max(15, Math.round((p - proFromOats - proFromPB) / 0.75));
 
         let items = [
-          `<strong>Rolled Oats (Dry):</strong> ${dryOatsGrams}g (~${(dryOatsGrams / 40).toFixed(1)} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups) [${carbsFromOats}g carbs]`,
+          `<strong>Rolled Oats:</strong> ${dryOatsGrams}g (~${(dryOatsGrams / 40).toFixed(1)} half-cups / ${(dryOatsGrams / 80).toFixed(2)} cups) [${carbsFromOats}g carbs]`,
           `<strong>Pea / Rice Protein Isolate:</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops)`
         ];
 
@@ -481,7 +486,7 @@
         let items = [
           `<strong>Plain Unsweetened Soy Yogurt:</strong> ${soyYogurtG}g (~9 oz)`,
           `<strong>Plant Protein Isolate (Stirred In):</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops)`,
-          `<strong>Cream of Rice (Dry):</strong> ${corGrams}g (~${toOz(corGrams)} oz) [${carbsFromCor}g carbs]`,
+          `<strong>Cream of Rice:</strong> ${corGrams}g (~${toOz(corGrams)} oz) [${carbsFromCor}g carbs]`,
           `<strong>Chia Seeds / Raw Walnuts:</strong> ${Math.round(f / 0.50)}g`
         ];
 
@@ -505,7 +510,7 @@
         const addedButter = Math.max(0, f - 15 - fatFromBeef);
         return [
           `<strong>Whole Pasture-Raised Eggs:</strong> 3 large (18g P, 15g F)`,
-          `<strong>85/15 Ground Beef (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [${fatFromBeef}g inherent fat]`,
+          `<strong>85/15 Ground Beef:</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [${fatFromBeef}g inherent fat]`,
           addedButter > 2 ? `<strong>Grass-Fed Butter / Tallow:</strong> ${(addedButter / 4.5).toFixed(1)} tsp` : `<strong>Cooking Fat:</strong> 0 tsp (Covered by beef & eggs)`,
           `<strong>Electrolytes:</strong> 1/2 tsp Redmond Real Salt / Sea Salt`
         ];
@@ -528,8 +533,8 @@
         const addedFat = Math.max(0, f - inherentFat);
 
         let items = [
-          `<strong>Chicken Breast (Raw):</strong> ${chickenGrams}g (~${toOz(chickenGrams)} oz)`,
-          `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs]`,
+          `<strong>Chicken Breast:</strong> ${chickenGrams}g (~${toOz(chickenGrams)} oz)`,
+          `<strong>Jasmine White Rice:</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs]`,
           `<strong>Extra Virgin Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp drizzle [Deducted ${inherentFat}g chicken fat]`
         ];
         items.push(opt.produce);
@@ -551,8 +556,8 @@
         const addedFat = Math.max(0, f - inherentFat);
 
         let items = [
-          `<strong>93/7 Lean Ground Turkey (Raw):</strong> ${turkeyGrams}g (~${toOz(turkeyGrams)} oz) [${inherentFat}g inherent fat]`,
-          `<strong>Red / Russet Potatoes (Raw Diced):</strong> ${potatoGrams}g (~${toOz(potatoGrams)} oz) [${carbsFromPot}g carbs]`
+          `<strong>93/7 Lean Ground Turkey:</strong> ${turkeyGrams}g (~${toOz(turkeyGrams)} oz) [${inherentFat}g inherent fat]`,
+          `<strong>Red / Russet Potatoes:</strong> ${potatoGrams}g (~${toOz(potatoGrams)} oz) [${carbsFromPot}g carbs]`
         ];
         items.push(addedFat > 2 ? `<strong>Fresh Avocado / Olive Oil:</strong> ${Math.round(addedFat / 0.15)}g avocado` : `<strong>Added Fat:</strong> 0 tsp (Covered by turkey)`);
         items.push(opt.produce);
@@ -573,7 +578,7 @@
         const addedFat = Math.max(0, f - Math.round(fishGrams * 0.02));
 
         let items = [
-          `<strong>Cod / Tilapia / White Fish (Raw):</strong> ${fishGrams}g (~${toOz(fishGrams)} oz)`,
+          `<strong>Cod / Tilapia / White Fish:</strong> ${fishGrams}g (~${toOz(fishGrams)} oz)`,
           `<strong>Brown Rice Noodles / Gluten-Free Pasta:</strong> ${pastaGrams}g (~${toOz(pastaGrams)} oz dry) [${carbsFromPasta}g carbs]`,
           `<strong>Extra Virgin Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp`
         ];
@@ -601,7 +606,7 @@
         let items = [
           `<strong>Organic Soy Tempeh (Pan-Seared):</strong> ${tempehGrams}g (~5.3 oz) [${proFromTempeh}g Protein, ${fatFromTempeh}g fat base]`,
           plantPowderG > 5 ? `<strong>Pea / Rice Protein Booster (In Sauce / Shake):</strong> ${plantPowderG}g (~${(plantPowderG / 25).toFixed(1)} scoops) [${proRem}g Protein]` : '',
-          `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs]`
+          `<strong>Jasmine White Rice:</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs]`
         ].filter(Boolean);
 
         items.push(addedFat > 2 ? `<strong>Sesame / Olive Oil:</strong> ${(addedFat / 4.5).toFixed(1)} tsp` : `<strong>Added Oil:</strong> 0 tsp (Covered by tempeh)`);
@@ -622,8 +627,8 @@
         const avoGrams = Math.round(f / 0.15);
 
         let items = [
-          `<strong>Vital Wheat Gluten / Prepared Seitan:</strong> ${seitanGrams}g (~${toOz(seitanGrams)} oz) [${p}g High Protein Base, <3g fat]`,
-          `<strong>Red / Russet Potatoes (Diced):</strong> ${potGrams}g (~${toOz(potGrams)} oz) [${carbsFromPot}g carbs]`,
+          `<strong>Prepared Seitan:</strong> ${seitanGrams}g (~${toOz(seitanGrams)} oz) [${p}g High Protein Base, <3g fat]`,
+          `<strong>Red / Russet Potatoes:</strong> ${potGrams}g (~${toOz(potGrams)} oz) [${carbsFromPot}g carbs]`,
           `<strong>Fresh Hass Avocado:</strong> ${avoGrams}g (~${toOz(avoGrams)} oz)`
         ];
         items.push(opt.produce);
@@ -639,7 +644,7 @@
       build: (p, c, f) => {
         const beefGrams = Math.round(p / 0.20);
         return [
-          `<strong>80/20 Ground Chuck Beef Patties (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz)`,
+          `<strong>80/20 Ground Chuck Beef Patties:</strong> ${beefGrams}g (~${toOz(beefGrams)} oz)`,
           `<strong>Inherent Fat Content:</strong> ${Math.round(beefGrams * 0.20)}g natural bovine fat (No added oils needed)`,
           `<strong>Seasoning:</strong> Coarse sea salt only`
         ];
@@ -663,14 +668,14 @@
         const addedFat = Math.max(0, f - inherentFat);
 
         let items = [
-          `<strong>Top Sirloin Steak (Raw):</strong> ${steakGrams}g (~${toOz(steakGrams)} oz) [${inherentFat}g inherent fat]`,
-          `<strong>Sweet Potato / Yams (Raw):</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz) [${carbsFromSP}g carbs - Single Starch Base]`
+          `<strong>Top Sirloin Steak:</strong> ${steakGrams}g (~${toOz(steakGrams)} oz) [${inherentFat}g inherent fat]`,
+          `<strong>Sweet Potato / Yams:</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz) [${carbsFromSP}g carbs - Single Starch Base]`
         ];
         if (carbsRem > 0) {
           if (opt.enableLiquid) {
             items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
           } else {
-            items.push(`<strong>Extra Sweet Potato (Cap Overflow):</strong> +${Math.round(carbsRem / 0.20)}g raw [${carbsRem}g carbs - starch cap exceeded, add more sweet potato or a second carb side]`);
+            items.push(`<strong>Extra Sweet Potato (Cap Overflow):</strong> +${Math.round(carbsRem / 0.20)}g [${carbsRem}g carbs - starch cap exceeded, add more sweet potato or a second carb side]`);
           }
         }
         items.push(addedFat > 2 ? `<strong>Grass-Fed Butter:</strong> ${(addedFat / 4.5).toFixed(1)} tsp` : `<strong>Added Fat:</strong> 0 tsp (Covered by steak)`);
@@ -697,15 +702,15 @@
         const carbsRem = Math.max(0, c - carbsFromPot);
 
         let items = [
-          `<strong>Atlantic Salmon Fillet (Raw):</strong> ${salmonGrams}g (~${toOz(salmonGrams)} oz) [Capped: ${proFromSalmon}g P, ${inherentFat}g Omega-3 Fat]`
+          `<strong>Atlantic Salmon Fillet:</strong> ${salmonGrams}g (~${toOz(salmonGrams)} oz) [Capped: ${proFromSalmon}g P, ${inherentFat}g Omega-3 Fat]`
         ];
         if (proRem > 5) items.push(`<strong>Lean Protein Booster:</strong> ${shrimpGrams}g (~${toOz(shrimpGrams)} oz) Raw Shrimp or Cod (Provides remaining ${proRem}g Protein with 0g fat)`);
-        items.push(`<strong>Yukon Gold Potatoes (Raw):</strong> ${potGrams}g (~${toOz(potGrams)} oz) [${carbsFromPot}g carbs - Single Starch Base]`);
+        items.push(`<strong>Yukon Gold Potatoes:</strong> ${potGrams}g (~${toOz(potGrams)} oz) [${carbsFromPot}g carbs - Single Starch Base]`);
         if (carbsRem > 0) {
           if (opt.enableLiquid) {
             items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
           } else {
-            items.push(`<strong>Extra Potatoes (Cap Overflow):</strong> +${Math.round(carbsRem / 0.17)}g raw [${carbsRem}g carbs - starch cap exceeded, add more potato or a second carb side]`);
+            items.push(`<strong>Extra Potatoes (Cap Overflow):</strong> +${Math.round(carbsRem / 0.17)}g [${carbsRem}g carbs - starch cap exceeded, add more potato or a second carb side]`);
           }
         }
         items.push(`<strong>Added Cooking Fat:</strong> 0 tsp (Salmon covers meal fat allotment)`);
@@ -730,14 +735,14 @@
         const addedFat = Math.max(0, f - inherentFat);
 
         let items = [
-          `<strong>93/7 Lean Ground Beef (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [${inherentFat}g inherent fat]`,
-          `<strong>Jasmine White Rice (Dry Raw):</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs - Single Starch Base]`
+          `<strong>93/7 Lean Ground Beef:</strong> ${beefGrams}g (~${toOz(beefGrams)} oz) [${inherentFat}g inherent fat]`,
+          `<strong>Jasmine White Rice:</strong> ${riceGrams}g (~${toOz(riceGrams)} oz dry) [${carbsFromRice}g carbs - Single Starch Base]`
         ];
         if (carbsRem > 0) {
           if (opt.enableLiquid) {
             items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
           } else {
-            items.push(`<strong>Extra Jasmine Rice (Cap Overflow):</strong> +${Math.round(carbsRem / 0.80)}g dry [${carbsRem}g carbs - starch cap exceeded, add more rice or a second carb side]`);
+            items.push(`<strong>Extra Jasmine Rice (Cap Overflow):</strong> +${Math.round(carbsRem / 0.80)}g [${carbsRem}g carbs - starch cap exceeded, add more rice or a second carb side]`);
           }
         }
         items.push(addedFat > 2 ? `<strong>Fresh Avocado:</strong> ${Math.round(addedFat / 0.15)}g avocado` : `<strong>Added Fat:</strong> 0 tsp (Covered by beef)`);
@@ -766,14 +771,14 @@
         let items = [
           `<strong>Extra Firm Organic Tofu (Baked/Grilled):</strong> ${tofuGrams}g (~8 oz) [${proFromTofu}g Protein, ${fatFromTofu}g fat base]`,
           edamameGrams > 10 ? `<strong>Steamed Shelled Edamame (Side):</strong> ${edamameGrams}g (~${toOz(edamameGrams)} oz) [Provides remaining ${proRem}g Protein]` : '',
-          `<strong>Sweet Potato / Yams (Raw):</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz) [${carbsFromSP}g carbs - Single Starch Base]`
+          `<strong>Sweet Potato / Yams:</strong> ${sweetPotGrams}g (~${toOz(sweetPotGrams)} oz) [${carbsFromSP}g carbs - Single Starch Base]`
         ].filter(Boolean);
 
         if (carbsRem > 0) {
           if (opt.enableLiquid) {
             items.push(`<strong>100% Fruit Juice / Fluid Carb (Low Appetite Mode):</strong> ${Math.round(carbsRem / 3.5)} fl oz [${carbsRem}g carbs]`);
           } else {
-            items.push(`<strong>Extra Sweet Potato (Cap Overflow):</strong> +${Math.round(carbsRem / 0.20)}g raw [${carbsRem}g carbs - starch cap exceeded, add more sweet potato or a second carb side]`);
+            items.push(`<strong>Extra Sweet Potato (Cap Overflow):</strong> +${Math.round(carbsRem / 0.20)}g [${carbsRem}g carbs - starch cap exceeded, add more sweet potato or a second carb side]`);
           }
         }
         items.push(addedOil > 2 ? `<strong>Extra Virgin Olive Oil:</strong> ${(addedOil / 4.5).toFixed(1)} tsp` : `<strong>Added Oil:</strong> 0 tsp (Covered by tofu)`);
@@ -790,7 +795,7 @@
       build: (p, c, f) => {
         const beefGrams = Math.round(p / 0.21);
         return [
-          `<strong>Beef Chuck Roast / Boneless Short Ribs (Raw):</strong> ${beefGrams}g (~${toOz(beefGrams)} oz)`,
+          `<strong>Beef Chuck Roast / Boneless Short Ribs:</strong> ${beefGrams}g (~${toOz(beefGrams)} oz)`,
           `<strong>Inherent Fat Content:</strong> ${Math.round(beefGrams * 0.18)}g natural braised fat`,
           `<strong>Salt & Mineral Water:</strong> Season generously with coarse sea salt`
         ];
@@ -968,6 +973,7 @@
     bioScores: { strength: 4, recovery: 4, digestion: 5, satiety: 4 },
     dietArchetype: "omnivore",
     includeSnack: true,
+    consecutiveSurplusSpikes: 0,
     selectedOptions: {}
   };
 
@@ -981,6 +987,7 @@
         if (d.phase && document.getElementById('phase')) document.getElementById('phase').value = d.phase;
         if (d.mealCount && document.getElementById('mealFrequency')) document.getElementById('mealFrequency').value = d.mealCount;
         if (typeof d.includeSnack === 'boolean' && document.getElementById('snackToggle')) document.getElementById('snackToggle').checked = d.includeSnack;
+        if (typeof d.consecutiveSurplusSpikes === 'number') state.consecutiveSurplusSpikes = d.consecutiveSurplusSpikes;
       }
     } catch (e) {}
   };
@@ -1030,7 +1037,7 @@
       if (adhr < 5) {
         rationale = `Diet adherence was ${adhr}/7 days. Macros held steady to establish consistency before metabolic adjustments.`;
       } else {
-        // Implement 0.5 lb to 1.5 lb Stable Weight Fluctuation Buffer Window
+        // Apply 0.5 lb to 1.5 lb Stable Weight Fluctuation Buffer Window
         if (absDeltaW >= 0.5 && absDeltaW <= 1.5) {
           newAvgCals = currC;
           rationale = `Weight change is holding within a normal physiological fluctuation range (0.5–1.5 lbs/week from glycogen, water, or sodium retention). Targets held steady until weight trend stabilizes.`;
@@ -1052,18 +1059,30 @@
             }
           } else if (phase === "hypertrophy") {
             if (deltaW < -0.5) {
+              state.consecutiveSurplusSpikes = 0; // reset
               newAvgCals = currC + 175;
               rationale = `Weight decreased by ${Math.abs(deltaW).toFixed(1)} lbs during a muscle gain phase. Added +175 kcal daily to reverse loss and establish the target surplus.`;
             } else if (pctChange < 0.1 && deltaW <= 0.4) {
+              state.consecutiveSurplusSpikes = 0; // reset
               newAvgCals = currC + 125;
               rationale = `Scale weight stalled in surplus (${pctChange.toFixed(2)}% change). Added 125 kcal daily.`;
-            } else if (pctChange > 0.6 || deltaW > 2.0) {
-              newAvgCals = currC - 75;
-              rationale = `Surplus progressing faster than optimal lean tissue gain (${pctChange.toFixed(2)}% gain). Trimmed 75 kcal to minimize fat gain.`;
+            } else if (pctChange > 0.6 || deltaW > 1.5) {
+              // 2-Week Settling Period Rule for Surplus Weight Increases
+              state.consecutiveSurplusSpikes = (state.consecutiveSurplusSpikes || 0) + 1;
+              if (state.consecutiveSurplusSpikes >= 2) {
+                newAvgCals = currC - 125;
+                state.consecutiveSurplusSpikes = 0; // reset after trimming
+                rationale = `Weight increased above the weekly threshold for two consecutive check-ins (Week 1 spike + Week 2 continued rise). Trimmed 125 kcal to maintain optimal surplus velocity.`;
+              } else {
+                newAvgCals = currC; // Hold steady for week 1 settling period
+                rationale = `Weight increased above the weekly threshold (+${deltaW.toFixed(1)} lbs), but we are holding calories steady for a 2-week settling period to allow metabolism to adjust before making any downward adjustments.`;
+              }
             } else {
+              state.consecutiveSurplusSpikes = 0;
               rationale = `Hypertrophy surplus rate is right on track. Targets held steady.`;
             }
           } else {
+            state.consecutiveSurplusSpikes = 0;
             rationale = `Maintenance phase targets held to stabilize body mass.`;
           }
         }
@@ -1095,21 +1114,16 @@
 
       const weeklyBudget = resolvedBaseCals * 7;
 
-      state = {
-        phase,
-        currentWeight: currW,
-        mealCount: numMeals,
-        carbCycling: isCycling && archetype !== "carnivore",
-        trainingDays: trainDays,
-        dailyBaseline: { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat },
-        trainingDayTargets: null,
-        restDayTargets: null,
-        activeView: isCycling && archetype !== "carnivore" ? "train" : "baseline",
-        bioScores: { strength: rStrength, recovery: rRecovery, digestion: rDigestion, satiety: rDiet },
-        dietArchetype: archetype,
-        includeSnack,
-        selectedOptions: {}
-      };
+      state.phase = phase;
+      state.currentWeight = currW;
+      state.mealCount = numMeals;
+      state.carbCycling = isCycling && archetype !== "carnivore";
+      state.trainingDays = trainDays;
+      state.dailyBaseline = { calories: resolvedBaseCals, protein: pro, carbs: baseCarb, fats: baseFat };
+      state.activeView = isCycling && archetype !== "carnivore" ? "train" : "baseline";
+      state.bioScores = { strength: rStrength, recovery: rRecovery, digestion: rDigestion, satiety: rDiet };
+      state.dietArchetype = archetype;
+      state.includeSnack = includeSnack;
 
       try {
         localStorage.setItem('trainer_macro_cache', JSON.stringify(state));
