@@ -1,0 +1,12 @@
+[
+  {
+    "id": "l_chicken_rice",
+    "name": "Chicken Breast & Jasmine Rice Bowl",
+    "slot": "lunch",
+    "archetype": ["omnivore"],
+    "keywords": ["chicken", "rice", "jasmine rice"],
+    "protein_grams": 40,
+    "carb_grams": 60,
+    "fat_grams": 15
+  }
+]
