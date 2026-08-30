@@ -1,12 +1,93 @@
 [
   {
+    "id": "b_egg_toast",
+    "name": "Pasture Eggs & Sourdough Scramble + Fruit",
+    "slot": "breakfast",
+    "archetype": ["omnivore", "vegetarian"],
+    "keywords": ["egg", "eggs", "toast", "sourdough", "bread"],
+    "ingredients": [
+      "2 large Whole Eggs",
+      "120g Liquid Egg Whites",
+      "2 slices Sourdough Bread",
+      "120g Fresh Berries",
+      "1 tsp Grass-Fed Butter"
+    ]
+  },
+  {
+    "id": "b_power_oats",
+    "name": "High-Protein Oatmeal Power Bowl",
+    "slot": "breakfast",
+    "archetype": ["omnivore", "vegetarian"],
+    "keywords": ["oat", "oats", "oatmeal", "whey", "peanut butter"],
+    "ingredients": [
+      "50g Rolled Oats",
+      "1.5 scoops Whey Isolate",
+      "120g Sliced Banana or Berries",
+      "16g All-Natural Peanut Butter"
+    ]
+  },
+  {
     "id": "l_chicken_rice",
     "name": "Chicken Breast & Jasmine Rice Bowl",
     "slot": "lunch",
     "archetype": ["omnivore"],
     "keywords": ["chicken", "rice", "jasmine rice"],
-    "protein_grams": 40,
-    "carb_grams": 60,
-    "fat_grams": 15
+    "ingredients": [
+      "160g Raw Chicken Breast",
+      "100g Dry Jasmine White Rice",
+      "1 tsp Extra Virgin Olive Oil",
+      "1.5 cups Steamed Spinach or Broccoli"
+    ]
+  },
+  {
+    "id": "l_turkey_potato",
+    "name": "93/7 Ground Turkey & Diced Potato Hash",
+    "slot": "lunch",
+    "archetype": ["omnivore", "paleo"],
+    "keywords": ["turkey", "potato", "potatoes"],
+    "ingredients": [
+      "170g 93/7 Lean Ground Turkey",
+      "300g Red or Russet Potatoes",
+      "30g Fresh Avocado",
+      "1.5 cups Sautéed Zucchini or Peppers"
+    ]
+  },
+  {
+    "id": "d_sirloin_sweet_potato",
+    "name": "Top Sirloin Steak & Sweet Potato",
+    "slot": "dinner",
+    "archetype": ["omnivore", "paleo"],
+    "keywords": ["steak", "sirloin", "sweet potato"],
+    "ingredients": [
+      "180g Top Sirloin Steak",
+      "300g Raw Sweet Potato",
+      "1 tsp Grass-Fed Butter",
+      "1.5 cups Steamed Asparagus or Green Beans"
+    ]
+  },
+  {
+    "id": "d_salmon_mash",
+    "name": "Atlantic Salmon & Yukon Gold Mash",
+    "slot": "dinner",
+    "archetype": ["omnivore", "paleo"],
+    "keywords": ["salmon", "fish", "potato", "potatoes"],
+    "ingredients": [
+      "170g Atlantic Salmon Fillet",
+      "300g Yukon Gold Potatoes",
+      "1.5 cups Steamed Broccoli"
+    ]
+  },
+  {
+    "id": "s_yogurt_berries",
+    "name": "Greek Yogurt & Berries",
+    "slot": "snack",
+    "archetype": ["omnivore", "vegetarian"],
+    "keywords": ["yogurt", "greek yogurt", "berries", "dairy"],
+    "ingredients": [
+      "200g Plain 0% Greek Yogurt",
+      "0.5 scoop Whey Isolate",
+      "80g Fresh Mixed Berries",
+      "15g Raw Almonds"
+    ]
   }
 ]
